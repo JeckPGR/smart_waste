@@ -1,0 +1,63 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.DashboardService = void 0;
+const common_1 = require("@nestjs/common");
+const client_1 = require("@prisma/client");
+const prisma_service_1 = require("../prisma/prisma.service");
+const WIB_OFFSET_MS = 7 * 60 * 60 * 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
+const dayKey = (d) => new Date(d.getTime() + WIB_OFFSET_MS).toISOString().slice(0, 10);
+let DashboardService = class DashboardService {
+    prisma;
+    constructor(prisma) {
+        this.prisma = prisma;
+    }
+    async stats() {
+        const [total, byStatus, byCategory, totalUsers] = await Promise.all([
+            this.prisma.report.count(),
+            this.prisma.report.groupBy({ by: ['status'], _count: { _all: true } }),
+            this.prisma.report.groupBy({ by: ['category'], _count: { _all: true } }),
+            this.prisma.user.count({ where: { role: client_1.Role.USER } }),
+        ]);
+        const status = Object.fromEntries(Object.values(client_1.ReportStatus).map((s) => [s, 0]));
+        byStatus.forEach((r) => (status[r.status] = r._count._all));
+        const category = { ORGANIC: 0, PLASTIC: 0, PAPER: 0, UNCATEGORIZED: 0 };
+        byCategory.forEach((r) => (category[r.category ?? 'UNCATEGORIZED'] = r._count._all));
+        return { totalReports: total, totalUsers, byStatus: status, byCategory: category };
+    }
+    async trend(days) {
+        const now = new Date();
+        const start = new Date(`${dayKey(new Date(now.getTime() - (days - 1) * DAY_MS))}T00:00:00+07:00`);
+        const rows = await this.prisma.report.findMany({ where: { createdAt: { gte: start } }, select: { createdAt: true } });
+        const counts = new Map();
+        for (let i = days - 1; i >= 0; i--)
+            counts.set(dayKey(new Date(now.getTime() - i * DAY_MS)), 0);
+        rows.forEach((r) => {
+            const k = dayKey(r.createdAt);
+            counts.set(k, (counts.get(k) ?? 0) + 1);
+        });
+        return Array.from(counts, ([date, count]) => ({ date, count }));
+    }
+    async me(userId) {
+        const grouped = await this.prisma.report.groupBy({ by: ['status'], where: { userId }, _count: { _all: true } });
+        const byStatus = Object.fromEntries(Object.values(client_1.ReportStatus).map((s) => [s, 0]));
+        grouped.forEach((r) => (byStatus[r.status] = r._count._all));
+        const total = Object.values(byStatus).reduce((a, b) => a + b, 0);
+        return { totalReports: total, byStatus };
+    }
+};
+exports.DashboardService = DashboardService;
+exports.DashboardService = DashboardService = __decorate([
+    (0, common_1.Injectable)(),
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+], DashboardService);
+//# sourceMappingURL=dashboard.service.js.map

@@ -15,14 +15,14 @@ export declare class ReportsController {
         createdAt: Date;
         updatedAt: Date;
         description: string;
+        userId: string;
+        imageUrl: string;
         latitude: number;
         longitude: number;
         address: string | null;
         category: import("@prisma/client").$Enums.WasteCategory | null;
         aiConfidence: number | null;
         status: import("@prisma/client").$Enums.ReportStatus;
-        userId: string;
-        imageUrl: string;
         adminNote: string | null;
     }>;
     findMine(user: AuthUser, q: QueryReportsDto): Promise<{
@@ -37,14 +37,14 @@ export declare class ReportsController {
             createdAt: Date;
             updatedAt: Date;
             description: string;
+            userId: string;
+            imageUrl: string;
             latitude: number;
             longitude: number;
             address: string | null;
             category: import("@prisma/client").$Enums.WasteCategory | null;
             aiConfidence: number | null;
             status: import("@prisma/client").$Enums.ReportStatus;
-            userId: string;
-            imageUrl: string;
             adminNote: string | null;
         })[];
         meta: {
@@ -66,14 +66,14 @@ export declare class ReportsController {
             createdAt: Date;
             updatedAt: Date;
             description: string;
+            userId: string;
+            imageUrl: string;
             latitude: number;
             longitude: number;
             address: string | null;
             category: import("@prisma/client").$Enums.WasteCategory | null;
             aiConfidence: number | null;
             status: import("@prisma/client").$Enums.ReportStatus;
-            userId: string;
-            imageUrl: string;
             adminNote: string | null;
         })[];
         meta: {
@@ -108,14 +108,14 @@ export declare class ReportsController {
         createdAt: Date;
         updatedAt: Date;
         description: string;
+        userId: string;
+        imageUrl: string;
         latitude: number;
         longitude: number;
         address: string | null;
         category: import("@prisma/client").$Enums.WasteCategory | null;
         aiConfidence: number | null;
         status: import("@prisma/client").$Enums.ReportStatus;
-        userId: string;
-        imageUrl: string;
         adminNote: string | null;
     }>;
     updateStatus(id: string, user: AuthUser, dto: UpdateStatusDto): Promise<{
@@ -129,14 +129,14 @@ export declare class ReportsController {
         createdAt: Date;
         updatedAt: Date;
         description: string;
+        userId: string;
+        imageUrl: string;
         latitude: number;
         longitude: number;
         address: string | null;
         category: import("@prisma/client").$Enums.WasteCategory | null;
         aiConfidence: number | null;
         status: import("@prisma/client").$Enums.ReportStatus;
-        userId: string;
-        imageUrl: string;
         adminNote: string | null;
     }>;
     update(id: string, user: AuthUser, dto: UpdateReportDto, file?: Express.Multer.File): Promise<{
@@ -150,14 +150,14 @@ export declare class ReportsController {
         createdAt: Date;
         updatedAt: Date;
         description: string;
+        userId: string;
+        imageUrl: string;
         latitude: number;
         longitude: number;
         address: string | null;
         category: import("@prisma/client").$Enums.WasteCategory | null;
         aiConfidence: number | null;
         status: import("@prisma/client").$Enums.ReportStatus;
-        userId: string;
-        imageUrl: string;
         adminNote: string | null;
     }>;
     remove(id: string, user: AuthUser): Promise<{

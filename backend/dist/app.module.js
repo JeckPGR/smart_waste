@@ -9,14 +9,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
+const ai_module_1 = require("./ai/ai.module");
 const auth_module_1 = require("./auth/auth.module");
+const dashboard_module_1 = require("./dashboard/dashboard.module");
 const prisma_module_1 = require("./prisma/prisma.module");
+const reports_module_1 = require("./reports/reports.module");
+const storage_module_1 = require("./storage/storage.module");
+const users_module_1 = require("./users/users.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot({ isGlobal: true }), prisma_module_1.PrismaModule, auth_module_1.AuthModule],
+        imports: [
+            config_1.ConfigModule.forRoot({ isGlobal: true }),
+            prisma_module_1.PrismaModule,
+            storage_module_1.StorageModule,
+            auth_module_1.AuthModule,
+            users_module_1.UsersModule,
+            reports_module_1.ReportsModule,
+            dashboard_module_1.DashboardModule,
+            ai_module_1.AiModule,
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
