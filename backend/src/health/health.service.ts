@@ -73,3 +73,4 @@ export class HealthService implements OnApplicationBootstrap, OnApplicationShutd
         }
     }
 }
+

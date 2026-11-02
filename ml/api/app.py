@@ -9,6 +9,7 @@ import json
 import logging
 from pathlib import Path
 
+# pyrefly: ignore[missing-import]
 import gradio as gr
 from fastapi import FastAPI, File, HTTPException, UploadFile
 import numpy as np
@@ -64,3 +65,4 @@ app = gr.mount_gradio_app(fastapi_app, demo, path="/")
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=7860)
+
