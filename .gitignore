@@ -30,6 +30,7 @@ backend/uploads/*
 !backend/uploads/.gitkeep
 
 # IDE & OS
+.claude/
 .DS_Store
 Thumbs.db
 
