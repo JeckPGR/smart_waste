@@ -1,0 +1,21 @@
+{
+  "class_names": [
+    "organic",
+    "paper",
+    "plastic"
+  ],
+  "display_names": {
+    "organic": "Organic Waste",
+    "paper": "Paper Waste",
+    "plastic": "Plastic Waste"
+  },
+  "img_size": [
+    224,
+    224
+  ],
+  "input": "RGB float32 0..255 (Rescaling ada di dalam model)",
+  "tensorflow_version": "2.21.0",
+  "keras_version": "3.13.2",
+  "test_accuracy": 0.9666666666666667,
+  "trained_at": "2026-11-02T05:43:41"
+}

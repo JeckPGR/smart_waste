@@ -1,0 +1,17 @@
+Test accuracy: 0.9667
+Test images: 360
+
+              precision    recall  f1-score   support
+
+     organic     0.9754    0.9917    0.9835       120
+       paper     0.9910    0.9167    0.9524       120
+     plastic     0.9370    0.9917    0.9636       120
+
+    accuracy                         0.9667       360
+   macro avg     0.9678    0.9667    0.9665       360
+weighted avg     0.9678    0.9667    0.9665       360
+
+Confusion matrix:
+[[119   0   1]
+ [  3 110   7]
+ [  0   1 119]]

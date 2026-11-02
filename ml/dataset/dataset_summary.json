@@ -1,0 +1,35 @@
+{
+  "organic": {
+    "train": 560,
+    "val": 120,
+    "test": 120,
+    "total": 800,
+    "duplicates_removed": 0,
+    "corrupt_removed": 0,
+    "sources": {
+      "B_12class": 800
+    }
+  },
+  "paper": {
+    "train": 560,
+    "val": 120,
+    "test": 120,
+    "total": 800,
+    "duplicates_removed": 0,
+    "corrupt_removed": 0,
+    "sources": {
+      "B_12class": 800
+    }
+  },
+  "plastic": {
+    "train": 560,
+    "val": 120,
+    "test": 120,
+    "total": 800,
+    "duplicates_removed": 0,
+    "corrupt_removed": 0,
+    "sources": {
+      "B_12class": 800
+    }
+  }
+}
