@@ -1,4 +1,16 @@
+import { Role } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+export interface LeaderboardUser {
+    id: string;
+    name: string;
+    role: Role;
+    totalReports: number;
+    completedReports: number;
+    xp: number;
+    level: number;
+    rank: number;
+    rankBadge: 'GOLD' | 'SILVER' | 'BRONZE' | 'STANDARD';
+}
 export declare class DashboardService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -16,4 +28,5 @@ export declare class DashboardService {
         totalReports: number;
         byStatus: Record<string, number>;
     }>;
+    leaderboard(): Promise<LeaderboardUser[]>;
 }

@@ -7,12 +7,15 @@ export declare class ReportsController {
     create(user: AuthUser, dto: CreateReportDto, file?: Express.Multer.File): Promise<{
         user: {
             id: string;
-            name: string;
             email: string;
+            name: string;
         };
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         description: string;
+        userId: string;
         imageUrl: string;
         latitude: number;
         longitude: number;
@@ -21,20 +24,20 @@ export declare class ReportsController {
         aiConfidence: number | null;
         status: import("@prisma/client").$Enums.ReportStatus;
         adminNote: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        userId: string;
     }>;
     findMine(user: AuthUser, q: QueryReportsDto): Promise<{
         data: ({
             user: {
                 id: string;
-                name: string;
                 email: string;
+                name: string;
             };
         } & {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             description: string;
+            userId: string;
             imageUrl: string;
             latitude: number;
             longitude: number;
@@ -43,9 +46,6 @@ export declare class ReportsController {
             aiConfidence: number | null;
             status: import("@prisma/client").$Enums.ReportStatus;
             adminNote: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-            userId: string;
         })[];
         meta: {
             page: number;
@@ -58,12 +58,15 @@ export declare class ReportsController {
         data: ({
             user: {
                 id: string;
-                name: string;
                 email: string;
+                name: string;
             };
         } & {
             id: string;
+            createdAt: Date;
+            updatedAt: Date;
             description: string;
+            userId: string;
             imageUrl: string;
             latitude: number;
             longitude: number;
@@ -72,9 +75,6 @@ export declare class ReportsController {
             aiConfidence: number | null;
             status: import("@prisma/client").$Enums.ReportStatus;
             adminNote: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-            userId: string;
         })[];
         meta: {
             page: number;
@@ -92,16 +92,16 @@ export declare class ReportsController {
         } & {
             id: string;
             createdAt: Date;
+            note: string | null;
             fromStatus: import("@prisma/client").$Enums.ReportStatus | null;
             toStatus: import("@prisma/client").$Enums.ReportStatus;
-            note: string | null;
             changedById: string | null;
             reportId: string;
         })[];
         user: {
             id: string;
-            name: string;
             email: string;
+            name: string;
         };
         logs: ({
             changedBy: {
@@ -111,14 +111,17 @@ export declare class ReportsController {
         } & {
             id: string;
             createdAt: Date;
+            note: string | null;
             fromStatus: import("@prisma/client").$Enums.ReportStatus | null;
             toStatus: import("@prisma/client").$Enums.ReportStatus;
-            note: string | null;
             changedById: string | null;
             reportId: string;
         })[];
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         description: string;
+        userId: string;
         imageUrl: string;
         latitude: number;
         longitude: number;
@@ -127,19 +130,19 @@ export declare class ReportsController {
         aiConfidence: number | null;
         status: import("@prisma/client").$Enums.ReportStatus;
         adminNote: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        userId: string;
     }>;
     updateStatus(id: string, user: AuthUser, dto: UpdateStatusDto): Promise<{
         user: {
             id: string;
-            name: string;
             email: string;
+            name: string;
         };
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         description: string;
+        userId: string;
         imageUrl: string;
         latitude: number;
         longitude: number;
@@ -148,19 +151,19 @@ export declare class ReportsController {
         aiConfidence: number | null;
         status: import("@prisma/client").$Enums.ReportStatus;
         adminNote: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        userId: string;
     }>;
     update(id: string, user: AuthUser, dto: UpdateReportDto, file?: Express.Multer.File): Promise<{
         user: {
             id: string;
-            name: string;
             email: string;
+            name: string;
         };
     } & {
         id: string;
+        createdAt: Date;
+        updatedAt: Date;
         description: string;
+        userId: string;
         imageUrl: string;
         latitude: number;
         longitude: number;
@@ -169,9 +172,6 @@ export declare class ReportsController {
         aiConfidence: number | null;
         status: import("@prisma/client").$Enums.ReportStatus;
         adminNote: string | null;
-        createdAt: Date;
-        updatedAt: Date;
-        userId: string;
     }>;
     remove(id: string, user: AuthUser): Promise<{
         message: string;

@@ -18,4 +18,5 @@ export declare class DashboardController {
         totalReports: number;
         byStatus: Record<string, number>;
     }>;
+    leaderboard(): Promise<import("./dashboard.service").LeaderboardUser[]>;
 }

@@ -37,6 +37,9 @@ let DashboardController = class DashboardController {
     me(user) {
         return this.dashboard.me(user.id);
     }
+    leaderboard() {
+        return this.dashboard.leaderboard();
+    }
 };
 exports.DashboardController = DashboardController;
 __decorate([
@@ -64,6 +67,13 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", void 0)
 ], DashboardController.prototype, "me", null);
+__decorate([
+    (0, common_1.Get)('leaderboard'),
+    openapi.ApiResponse({ status: 200, type: [Object] }),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], DashboardController.prototype, "leaderboard", null);
 exports.DashboardController = DashboardController = __decorate([
     (0, swagger_1.ApiTags)('Dashboard'),
     (0, swagger_1.ApiBearerAuth)(),

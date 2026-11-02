@@ -10,6 +10,7 @@ import { LoginScreen } from '@/modules/auth/screens/LoginScreen';
 import { RegisterScreen } from '@/modules/auth/screens/RegisterScreen';
 import { SplashScreen } from '@/modules/auth/screens/SplashScreen';
 import { DashboardScreen } from '@/modules/dashboard/screens/DashboardScreen';
+import { LeaderboardScreen } from '@/modules/dashboard/screens/LeaderboardScreen';
 import { ProfileScreen } from '@/modules/profile/screens/ProfileScreen';
 import { CreateReportScreen } from '@/modules/reports/screens/CreateReportScreen';
 import { ReportDetailScreen } from '@/modules/reports/screens/ReportDetailScreen';
@@ -69,6 +70,7 @@ function MainTabNavigator({ navigation: rootNavigation }: any) {
                         onNavigateCreateReport={() => rootNavigation.navigate('CreateReport')}
                         onNavigateReportsList={() => tabNav.navigate('ReportsTab')}
                         onNavigateDetail={(id) => rootNavigation.navigate('ReportDetail', { reportId: id })}
+                        onNavigateLeaderboard={() => rootNavigation.navigate('Leaderboard')}
                     />
                 )}
             </Tab.Screen>
@@ -77,23 +79,16 @@ function MainTabNavigator({ navigation: rootNavigation }: any) {
                 name="ReportsTab"
                 options={{
                     tabBarLabel: 'Laporan',
-                    tabBarButton: (props) => {
-                        const isFocused = props.accessibilityState?.selected;
-                        return (
-                            <TouchableOpacity
-                                {...props}
-                                activeOpacity={0.85}
-                                style={styles.mainTabButtonWrap}
-                            >
-                                <View style={[styles.mainTabCircle, isFocused && styles.mainTabCircleActive]}>
-                                    <Ionicons name="document-text-outline" size={22} color="#FFFFFF" />
-                                </View>
-                                <Text style={[styles.mainTabLabel, isFocused && styles.mainTabLabelActive]}>
-                                    Laporan
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    },
+                    tabBarIcon: ({ color, focused }) => (
+                        <View style={styles.tabIconWrap}>
+                            <Ionicons
+                                name={focused ? 'document-text' : 'document-text-outline'}
+                                size={22}
+                                color={color}
+                            />
+                            {focused && <View style={styles.activeIndicator} />}
+                        </View>
+                    ),
                 }}
             >
                 {() => (
@@ -102,6 +97,25 @@ function MainTabNavigator({ navigation: rootNavigation }: any) {
                         onNavigateDetail={(id) => rootNavigation.navigate('ReportDetail', { reportId: id })}
                     />
                 )}
+            </Tab.Screen>
+
+            <Tab.Screen
+                name="LeaderboardTab"
+                options={{
+                    tabBarLabel: 'Podium',
+                    tabBarIcon: ({ color, focused }) => (
+                        <View style={styles.tabIconWrap}>
+                            <Ionicons
+                                name={focused ? 'trophy' : 'trophy-outline'}
+                                size={22}
+                                color={color}
+                            />
+                            {focused && <View style={styles.activeIndicator} />}
+                        </View>
+                    ),
+                }}
+            >
+                {() => <LeaderboardScreen />}
             </Tab.Screen>
 
             <Tab.Screen
@@ -169,6 +183,11 @@ export function AppNavigator() {
                                     onBack={() => navigation.goBack()}
                                     onDeleted={() => navigation.goBack()}
                                 />
+                            )}
+                        </Stack.Screen>
+                        <Stack.Screen name="Leaderboard">
+                            {({ navigation }) => (
+                                <LeaderboardScreen onBack={() => navigation.goBack()} />
                             )}
                         </Stack.Screen>
                     </>
@@ -265,38 +284,5 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.primary,
         borderRadius: 1,
         marginTop: 2,
-    },
-    mainTabButtonWrap: {
-        top: -14,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flex: 1,
-    },
-    mainTabCircle: {
-        width: 48,
-        height: 48,
-        borderRadius: 24,
-        backgroundColor: Colors.primary,
-        alignItems: 'center',
-        justifyContent: 'center',
-        shadowColor: Colors.primary,
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.28,
-        shadowRadius: 6,
-        elevation: 5,
-    },
-    mainTabCircleActive: {
-        backgroundColor: Colors.primaryDark,
-        transform: [{ scale: 1.05 }],
-    },
-    mainTabLabel: {
-        fontSize: 11,
-        fontWeight: '600',
-        color: '#64748B',
-        marginTop: 3,
-    },
-    mainTabLabelActive: {
-        color: Colors.primary,
-        fontWeight: '700',
     },
 });

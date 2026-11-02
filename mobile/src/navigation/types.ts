@@ -5,11 +5,12 @@ export type RootStackParamList = {
     MainTabs: undefined;
     CreateReport: undefined;
     ReportDetail: { reportId: string };
+    Leaderboard: undefined;
 };
 
 export type MainTabParamList = {
     DashboardTab: undefined;
     ReportsTab: undefined;
+    LeaderboardTab: undefined;
     ProfileTab: undefined;
 };
-

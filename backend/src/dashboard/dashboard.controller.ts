@@ -32,4 +32,9 @@ export class DashboardController {
     me(@CurrentUser() user: AuthUser) {
         return this.dashboard.me(user.id);
     }
+
+    @Get('leaderboard')
+    leaderboard() {
+        return this.dashboard.leaderboard();
+    }
 }
