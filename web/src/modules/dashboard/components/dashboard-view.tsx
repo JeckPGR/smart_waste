@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
     ArrowUpRight,
+    Filter,
     CheckCircle2,
     ClipboardList,
     Clock,
@@ -42,6 +43,8 @@ export function DashboardView() {
     const [recentReports, setRecentReports] = useState<Report[]>([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [recentCategoryFilter, setRecentCategoryFilter] = useState<string>('ALL');
+    const [recentStatusFilter, setRecentStatusFilter] = useState<string>('ALL');
 
     // Dialogs
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -57,7 +60,7 @@ export function DashboardView() {
                 const [statsRes, trendRes, reportsRes] = await Promise.all([
                     dashboardService.getStats(),
                     dashboardService.getTrend(trendDays),
-                    reportsService.list({ page: 1, limit: 5, sortBy: 'createdAt', order: 'desc' }),
+                    reportsService.list({ page: 1, limit: 30, sortBy: 'createdAt', order: 'desc' }),
                 ]);
                 setAdminStats(statsRes);
                 setTrend(trendRes);
@@ -65,7 +68,7 @@ export function DashboardView() {
             } else {
                 const [userStatsRes, reportsRes] = await Promise.all([
                     dashboardService.getMyStats(),
-                    reportsService.listMine({ page: 1, limit: 5, sortBy: 'createdAt', order: 'desc' }),
+                    reportsService.listMine({ page: 1, limit: 30, sortBy: 'createdAt', order: 'desc' }),
                 ]);
                 setUserStats(userStatsRes);
                 setRecentReports(reportsRes.data);
@@ -89,6 +92,35 @@ export function DashboardView() {
         if (selectedReport?.id === updated.id) setSelectedReport(updated);
         loadData(true);
     };
+
+    const STATUS_PRIORITY: Record<string, number> = {
+        PENDING: 1,      // Menunggu (Prioritas 1 / Paling atas)
+        IN_PROGRESS: 2,  // Diproses (Prioritas 2)
+        REJECTED: 3,     // Ditolak (Prioritas 3)
+        COMPLETED: 4,    // Selesai (Prioritas 4)
+    };
+
+    const displayedRecentReports = React.useMemo(() => {
+        let list = [...recentReports];
+
+        if (recentCategoryFilter !== 'ALL') {
+            list = list.filter((r) => r.category === recentCategoryFilter);
+        }
+
+        if (recentStatusFilter !== 'ALL') {
+            list = list.filter((r) => r.status === recentStatusFilter);
+        }
+
+        // Urutan utama: Menunggu > Diproses > Ditolak > Selesai, lalu paling baru
+        list.sort((a, b) => {
+            const pA = STATUS_PRIORITY[a.status] ?? 99;
+            const pB = STATUS_PRIORITY[b.status] ?? 99;
+            if (pA !== pB) return pA - pB;
+            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        });
+
+        return list.slice(0, 5);
+    }, [recentReports, recentCategoryFilter, recentStatusFilter]);
 
     return (
         <div className="space-y-6">
@@ -298,24 +330,69 @@ export function DashboardView() {
 
                             <Card
                                 title={isAdmin ? 'Laporan Terbaru' : 'Laporan Terakhir Anda'}
-                                description="5 laporan sampah yang paling baru diajukan"
+                                description="Urutan prioritas: Menunggu > Diproses > Ditolak > Selesai"
                                 action={
                                     <Link
                                         href="/reports"
-                                        className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900"
+                                        className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-green-700"
                                     >
                                         Semua
                                         <ArrowUpRight className="w-3.5 h-3.5" />
                                     </Link>
                                 }
                             >
-                                {recentReports.length === 0 ? (
+                                {/* Filter Bar: Kategori & Status */}
+                                <div className="flex flex-wrap items-center justify-between gap-2 pb-3 mb-1 border-b border-slate-100">
+                                    <div className="flex items-center gap-1.5 flex-1 min-w-[200px]">
+                                        <Filter className="w-3 h-3 text-slate-400 shrink-0" />
+                                        {/* Kategori Filter */}
+                                        <select
+                                            value={recentCategoryFilter}
+                                            onChange={(e) => setRecentCategoryFilter(e.target.value)}
+                                            className="h-7 px-2 text-[11px] bg-slate-50 border border-slate-200 rounded-md text-slate-700 focus:outline-hidden focus:ring-1 focus:ring-green-600 focus:border-green-600 transition-colors cursor-pointer"
+                                            title="Filter Kategori"
+                                        >
+                                            <option value="ALL">Semua Kategori</option>
+                                            <option value="ORGANIC">Organik</option>
+                                            <option value="PLASTIC">Plastik</option>
+                                            <option value="PAPER">Kertas</option>
+                                        </select>
+
+                                        {/* Status Filter */}
+                                        <select
+                                            value={recentStatusFilter}
+                                            onChange={(e) => setRecentStatusFilter(e.target.value)}
+                                            className="h-7 px-2 text-[11px] bg-slate-50 border border-slate-200 rounded-md text-slate-700 focus:outline-hidden focus:ring-1 focus:ring-green-600 focus:border-green-600 transition-colors cursor-pointer"
+                                            title="Filter Status"
+                                        >
+                                            <option value="ALL">Semua Status</option>
+                                            <option value="PENDING">Menunggu</option>
+                                            <option value="IN_PROGRESS">Diproses</option>
+                                            <option value="REJECTED">Ditolak</option>
+                                            <option value="COMPLETED">Selesai</option>
+                                        </select>
+                                    </div>
+
+                                    {(recentCategoryFilter !== 'ALL' || recentStatusFilter !== 'ALL') && (
+                                        <button
+                                            onClick={() => {
+                                                setRecentCategoryFilter('ALL');
+                                                setRecentStatusFilter('ALL');
+                                            }}
+                                            className="text-[11px] text-green-700 hover:text-green-800 font-semibold cursor-pointer"
+                                        >
+                                            Reset
+                                        </button>
+                                    )}
+                                </div>
+
+                                {displayedRecentReports.length === 0 ? (
                                     <p className="text-xs text-slate-400 py-6 text-center">
-                                        Belum ada laporan sampah saat ini.
+                                        Tidak ada laporan yang sesuai dengan filter.
                                     </p>
                                 ) : (
                                     <div className="divide-y divide-slate-100">
-                                        {recentReports.map((report) => (
+                                        {displayedRecentReports.map((report) => (
                                             <div
                                                 key={report.id}
                                                 className="py-3 flex items-center justify-between gap-3 text-xs hover:bg-slate-50/60 px-2 -mx-2 rounded-lg transition-colors cursor-pointer"
@@ -344,7 +421,12 @@ export function DashboardView() {
                                                     </div>
                                                 </div>
 
-                                                <div className="shrink-0">
+                                                <div className="flex items-center gap-1.5 shrink-0">
+                                                    {report.category && (
+                                                        <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono rounded bg-slate-100 text-slate-600">
+                                                            {report.category === 'ORGANIC' ? 'Organik' : report.category === 'PLASTIC' ? 'Plastik' : 'Kertas'}
+                                                        </span>
+                                                    )}
                                                     <ReportStatusBadge status={report.status} />
                                                 </div>
                                             </div>
