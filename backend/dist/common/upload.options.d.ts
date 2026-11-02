@@ -4,5 +4,6 @@ export declare const imageUploadOptions: {
     };
     fileFilter: (_req: unknown, file: {
         mimetype: string;
+        originalname?: string;
     }, cb: (error: Error | null, accept: boolean) => void) => void;
 };

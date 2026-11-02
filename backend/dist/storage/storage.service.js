@@ -55,6 +55,9 @@ let StorageService = StorageService_1 = class StorageService {
         }
     }
     async save(file, folder = 'reports') {
+        if (!file.buffer || file.buffer.length < 100) {
+            throw new common_1.BadRequestException('File gambar kosong atau tidak terbaca dengan benar');
+        }
         const ext = EXT[file.mimetype] ?? '.jpg';
         const filename = `${(0, crypto_1.randomUUID)()}${ext}`;
         const key = `${folder}/${filename}`;

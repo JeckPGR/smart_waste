@@ -32,7 +32,7 @@ let ReportsService = class ReportsService {
         return this.prisma.report.create({
             data: {
                 userId,
-                description: dto.description,
+                description: dto.description?.trim() || 'Laporan Sampah',
                 latitude: dto.latitude,
                 longitude: dto.longitude,
                 address: dto.address,
@@ -74,7 +74,10 @@ let ReportsService = class ReportsService {
             throw new common_1.NotFoundException('Laporan tidak ditemukan');
         if (user.role !== client_1.Role.ADMIN && report.userId !== user.id)
             throw new common_1.ForbiddenException('Bukan laporan Anda');
-        return report;
+        return {
+            ...report,
+            statusLogs: report.logs,
+        };
     }
     async update(id, user, dto, file) {
         const report = await this.getReport(id);
@@ -100,7 +103,7 @@ let ReportsService = class ReportsService {
     async updateStatus(id, adminId, dto) {
         const report = await this.getReport(id);
         if (report.status === dto.status)
-            throw new common_1.BadRequestException('Status sama dengan status saat ini');
+            throw new common_1.BadRequestException('Status tidak bisa sama dengan sebelumnya!');
         const [updated] = await this.prisma.$transaction([
             this.prisma.report.update({
                 where: { id },

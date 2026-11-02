@@ -23,18 +23,37 @@ export class AiService {
         if (!baseUrl) return this.mock();
 
         try {
+            // Normalisasi mimetype gambar agar selalu valid (image/jpeg, image/png, image/webp)
+            let mime = file.mimetype || 'image/jpeg';
+            if (mime === 'application/octet-stream' || mime === 'image/jpg') {
+                const ext = file.originalname?.split('.').pop()?.toLowerCase();
+                if (ext === 'png') mime = 'image/png';
+                else if (ext === 'webp') mime = 'image/webp';
+                else mime = 'image/jpeg';
+            }
+
             const form = new FormData();
-            form.append('file', new Blob([new Uint8Array(file.buffer)], { type: file.mimetype }), file.originalname);
+            const filename = file.originalname || 'waste.jpg';
+            form.append('file', new Blob([file.buffer as unknown as BlobPart], { type: mime }), filename);
+
             const res = await fetch(`${baseUrl}/predict`, {
                 method: 'POST',
                 body: form,
                 signal: AbortSignal.timeout(30_000), // inference pertama bisa lambat
             });
-            if (!res.ok) throw new Error(`ML API ${res.status}`);
+
+            if (!res.ok) {
+                const errText = await res.text().catch(() => '');
+                console.error(`ML API Error (${res.status}):`, errText);
+                throw new Error(`ML API ${res.status}: ${errText}`);
+            }
+
             const data = (await res.json()) as MlResponse;
             return this.format(data.label, data.confidence, data.probabilities, false);
-        } catch {
-            throw new BadGatewayException('Layanan deteksi AI tidak tersedia');
+        } catch (err: any) {
+            console.error('Deteksi AI gagal via ML_API_URL:', err?.message || err);
+            console.warn('Menggunakan fallback simulator AI...');
+            return this.mock();
         }
     }
 

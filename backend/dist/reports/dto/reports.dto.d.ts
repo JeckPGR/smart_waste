@@ -1,7 +1,7 @@
 import { ReportStatus, WasteCategory } from '@prisma/client';
 import { PaginationDto } from '../../common/dto/pagination.dto';
 export declare class CreateReportDto {
-    description: string;
+    description?: string;
     latitude: number;
     longitude: number;
     address?: string;

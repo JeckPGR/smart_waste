@@ -32,3 +32,4 @@ backend/uploads/*
 # IDE & OS
 .DS_Store
 Thumbs.db
+

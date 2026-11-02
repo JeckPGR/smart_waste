@@ -1,11 +1,12 @@
 import { PartialType } from '@nestjs/swagger';
 import { ReportStatus, WasteCategory } from '@prisma/client';
 import { Type } from 'class-transformer';
-import { IsDateString, IsEnum, IsIn, IsNumber, IsOptional, IsString, IsUUID, Max, Min, MinLength } from 'class-validator';
+import { IsDateString, IsEnum, IsIn, IsNumber, IsOptional, IsString, IsUUID, Max, Min } from 'class-validator';
 import { PaginationDto } from '../../common/dto/pagination.dto';
 
 export class CreateReportDto {
-    @IsString() @MinLength(3) description!: string;
+    @IsOptional() @IsString()
+    description?: string;
 
     @Type(() => Number) @IsNumber() @Min(-90) @Max(90)
     latitude!: number;

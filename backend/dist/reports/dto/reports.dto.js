@@ -24,13 +24,13 @@ class CreateReportDto {
     category;
     aiConfidence;
     static _OPENAPI_METADATA_FACTORY() {
-        return { description: { required: true, type: () => String, minLength: 3 }, latitude: { required: true, type: () => Number, minimum: -90, maximum: 90 }, longitude: { required: true, type: () => Number, minimum: -180, maximum: 180 }, address: { required: false, type: () => String }, category: { required: false, enum: ["ORGANIC", "PLASTIC", "PAPER"] }, aiConfidence: { required: false, type: () => Number, minimum: 0, maximum: 1 } };
+        return { description: { required: false, type: () => String }, latitude: { required: true, type: () => Number, minimum: -90, maximum: 90 }, longitude: { required: true, type: () => Number, minimum: -180, maximum: 180 }, address: { required: false, type: () => String }, category: { required: false, enum: ["ORGANIC", "PLASTIC", "PAPER"] }, aiConfidence: { required: false, type: () => Number, minimum: 0, maximum: 1 } };
     }
 }
 exports.CreateReportDto = CreateReportDto;
 __decorate([
+    (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(3),
     __metadata("design:type", String)
 ], CreateReportDto.prototype, "description", void 0);
 __decorate([

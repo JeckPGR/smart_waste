@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { randomUUID } from 'crypto';
@@ -54,6 +54,10 @@ export class StorageService {
      * dan kembalikan URL publiknya.
      */
     async save(file: Express.Multer.File, folder = 'reports'): Promise<string> {
+        if (!file.buffer || file.buffer.length < 100) {
+            throw new BadRequestException('File gambar kosong atau tidak terbaca dengan benar');
+        }
+
         const ext = EXT[file.mimetype] ?? '.jpg';
         const filename = `${randomUUID()}${ext}`;
         const key = `${folder}/${filename}`;
