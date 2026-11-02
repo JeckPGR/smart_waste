@@ -79,9 +79,12 @@ export function AppSidebar({
                         href="/dashboard"
                         className="flex items-center gap-2.5 font-semibold text-xs tracking-tight text-slate-900 overflow-hidden"
                     >
-                        <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-slate-900 text-white shrink-0">
-                            <Recycle className="w-4 h-4" />
-                        </div>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                            src="/smart-waste-mascot.png"
+                            alt="Smart Waste Mascot"
+                            className="w-7 h-7 object-contain shrink-0"
+                        />
                         {!isCollapsed && (
                             <div className="truncate font-mono">
                                 <span>SMART</span>WASTE

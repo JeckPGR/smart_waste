@@ -47,9 +47,12 @@ export function LoginForm() {
     return (
         <div className="w-full max-w-sm space-y-6">
             <div className="space-y-2 text-center">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-900 text-white shadow-xs mb-1">
-                    <Recycle className="w-5 h-5" />
-                </div>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                    src="/smart-waste-mascot.png"
+                    alt="Smart Waste Mascot"
+                    className="w-14 h-14 object-contain mx-auto mb-1"
+                />
                 <h1 className="text-xl font-bold tracking-tight text-slate-900">
                     Smart Waste System
                 </h1>
