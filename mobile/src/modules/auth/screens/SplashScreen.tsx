@@ -26,6 +26,9 @@ interface SlideItem {
     description: string;
     isWelcome?: boolean;
     heroType?: 'camera' | 'gps-radius' | 'truck';
+    themeColor: string;
+    themeLightBg: string;
+    themeBorder: string;
 }
 
 export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) {
@@ -42,6 +45,9 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
             description:
                 'Cukup ambil foto tumpukan sampah liar yang Anda temukan. Sistem pintar akan langsung mengenali jenis sampahnya.',
             heroType: 'camera',
+            themeColor: '#16A34A',
+            themeLightBg: '#ECFDF5',
+            themeBorder: '#A7F3D0',
         },
         {
             id: 'slide-2',
@@ -50,6 +56,9 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
             description:
                 'Titik lokasi disematkan otomatis pada laporan Anda, sehingga petugas kebersihan dapat segera datang ke lokasi.',
             heroType: 'gps-radius',
+            themeColor: '#0284C7',
+            themeLightBg: '#F0F9FF',
+            themeBorder: '#BAE6FD',
         },
         {
             id: 'slide-3',
@@ -58,6 +67,9 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
             description:
                 'Laporan diteruskan ke armada satgas kebersihan untuk segera diangkut dan dibersihkan hingga tuntas.',
             heroType: 'truck',
+            themeColor: '#D97706',
+            themeLightBg: '#FFFBEB',
+            themeBorder: '#FDE68A',
         },
         {
             id: 'welcome',
@@ -65,6 +77,9 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
             title: 'Selamat Datang di\nSmart Waste',
             description:
                 'Bersama kita wujudkan lingkungan yang bersih, sehat, dan nyaman untuk semua warga.',
+            themeColor: '#16A34A',
+            themeLightBg: '#ECFDF5',
+            themeBorder: '#A7F3D0',
         },
     ];
 
@@ -162,8 +177,23 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
                 <View style={styles.stepContentWrap}>
                     {/* Tag Langkah */}
                     {item.tag && (
-                        <View style={styles.tagBadge}>
-                            <Text style={styles.tagText}>{item.tag}</Text>
+                        <View
+                            style={[
+                                styles.tagBadge,
+                                {
+                                    backgroundColor: item.themeLightBg,
+                                    borderColor: item.themeBorder,
+                                },
+                            ]}
+                        >
+                            <Text
+                                style={[
+                                    styles.tagText,
+                                    { color: item.themeColor },
+                                ]}
+                            >
+                                {item.tag}
+                            </Text>
                         </View>
                     )}
 
@@ -235,7 +265,13 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
                                         style={[
                                             styles.indicatorDot,
                                             isActive
-                                                ? styles.indicatorDotActive
+                                                ? [
+                                                      styles.indicatorDotActive,
+                                                      {
+                                                          backgroundColor:
+                                                              slides[activeIndex].themeColor,
+                                                      },
+                                                  ]
                                                 : styles.indicatorDotInactive,
                                         ]}
                                     />
@@ -245,7 +281,12 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
 
                         {/* Tombol Selanjutnya */}
                         <TouchableOpacity
-                            style={styles.nextBtn}
+                            style={[
+                                styles.nextBtn,
+                                {
+                                    backgroundColor: slides[activeIndex].themeColor,
+                                },
+                            ]}
                             activeOpacity={0.85}
                             onPress={handleNext}
                         >
