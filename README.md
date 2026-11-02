@@ -1,7 +1,6 @@
 # ♻️ Smart Waste Management System
 
 > **Sistem Manajemen dan Pelaporan Tumpukan Sampah Berbasis AI (Mobile, Web Admin, Backend API, & Deep Learning)**  
-> Technical Coding Test — Fullstack Developer (Bilcode Technology)
 
 ---
 
