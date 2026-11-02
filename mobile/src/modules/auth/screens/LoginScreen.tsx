@@ -151,14 +151,6 @@ export function LoginScreen({ onNavigateRegister }: LoginScreenProps) {
                             Belum memiliki akun? <Text style={styles.registerBold}>Daftar warga baru</Text>
                         </Text>
                     </TouchableOpacity>
-
-                    {/* Server Cloud Status Indicator */}
-                    <View style={styles.serverStatusWrap}>
-                        <View style={styles.serverStatusDot} />
-                        <Text style={styles.serverStatusLabel}>
-                            Server: Render Cloud (Online)
-                        </Text>
-                    </View>
                 </ScrollView>
             </KeyboardAvoidingView>
         </SafeAreaView>
@@ -174,9 +166,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollContent: {
+        flexGrow: 1,
+        justifyContent: 'center',
         paddingHorizontal: 22,
-        paddingTop: 24,
-        paddingBottom: 40,
+        paddingTop: 20,
+        paddingBottom: 28,
         alignItems: 'center',
     },
     header: {
@@ -184,10 +178,10 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     mascotBox: {
-        width: 72,
-        height: 72,
+        width: 80,
+        height: 80,
         backgroundColor: '#FFFFFF',
-        borderRadius: 20,
+        borderRadius: 22,
         borderWidth: 1,
         borderColor: '#E2E8F0',
         alignItems: 'center',
@@ -200,8 +194,8 @@ const styles = StyleSheet.create({
         elevation: 2,
     },
     mascotImage: {
-        width: 52,
-        height: 52,
+        width: 64,
+        height: 64,
     },
     appTitle: {
         fontSize: 22,
@@ -269,7 +263,6 @@ const styles = StyleSheet.create({
     },
     registerLink: {
         paddingVertical: 10,
-        marginBottom: 12,
     },
     registerText: {
         fontSize: 13,
@@ -278,30 +271,5 @@ const styles = StyleSheet.create({
     registerBold: {
         color: Colors.primary,
         fontWeight: '700',
-    },
-    serverStatusWrap: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 6,
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        backgroundColor: '#F0FDF4',
-        borderRadius: 20,
-        borderWidth: 1,
-        borderColor: '#DCFCE7',
-        alignSelf: 'center',
-        marginBottom: 20,
-    },
-    serverStatusDot: {
-        width: 7,
-        height: 7,
-        borderRadius: 4,
-        backgroundColor: '#16A34A',
-    },
-    serverStatusLabel: {
-        fontSize: 11,
-        fontWeight: '600',
-        color: '#15803D',
     },
 });
