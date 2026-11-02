@@ -10,11 +10,58 @@ Technical Coding Test, Fullstack Developer (Bilcode Technology)
 | 1 | Backend inti (NestJS + PostgreSQL) | ✅ Selesai |
 | 2 | Machine Learning (model + FastAPI) | ⏳ Ditunda sementara |
 | 3 | Website admin (Next.js) | ✅ Selesai |
-| 4 | Aplikasi mobile (Expo / React Native) | ⏳ Berikutnya |
-| 5 | Deploy + integrasi end-to-end | ⬜ Belum |
+| 4 | Aplikasi mobile (Expo / React Native) | ✅ Selesai |
+| 5 | Deploy + integrasi end-to-end | ⏳ Berikutnya |
 | 6 | Dokumentasi + video demo + submit | ⬜ Belum |
 
 Legenda: ✅ selesai, ⏳ sedang/berikutnya, ⬜ belum dimulai.
+
+---
+
+## Fase 4: Aplikasi Mobile Warga (React Native + Expo) ✅ Selesai
+
+Hasil akhir: Aplikasi mobile React Native (Expo) bertema Light Slate dengan sentuhan Retro Pixel Art, tombol utama hijau, onboarding splash screen pertama, dan terintegrasi penuh ke backend NestJS.
+
+- [x] **Setup Expo & TypeScript**:
+  - Inisialisasi Expo SDK 58 dengan React Native 0.88 & TypeScript.
+  - Path alias `@/*` di `tsconfig.json`.
+  - Typecheck lolos (`npx tsc --noEmit` 0 error).
+  - Dry run export Metro Bundler lolos untuk Android & iOS.
+- [x] **First Splash Screen**:
+  - Halaman sambutan onboarding warga dengan estetika pixel art (`[ LEVEL 1 ECO CITIZEN ]`, sprite maskot `♻️`, highlight 3 fitur unggulan, tombol hijau `[ MULAI SEKARANG ➔ ]`).
+- [x] **Autentikasi (JWT)**:
+  - Register & Login warga dengan token disimpan di `AsyncStorage`.
+  - Tombol demo instant login untuk warga & admin.
+  - Proteksi navigasi (transisi otomatis Splash ➔ Auth ➔ MainTabs).
+- [x] **Dashboard Pengguna**:
+  - Pangkat Eco Citizen & XP bar (`LVL 1 • 100 XP`).
+  - 4 Kotak statistik laporan harian (Total, Menunggu, Diproses, Selesai).
+  - Kartu ajakan cepat lapor sampah dengan tombol hijau.
+  - Kartu misi harian eco warga.
+  - Riwayat 3 laporan sampah terbaru warga.
+  - Pull-to-refresh untuk sinkronisasi data.
+- [x] **Pembuatan Laporan Sampah (Formulir Multi-Langkah)**:
+  - Ambil foto via Kamera atau Galeri (`expo-image-picker`).
+  - Deteksi jenis sampah otomatis via AI (`POST /ai/predict`) dengan badge persentase akurasi.
+  - Pemilihan kategori sampah: Organik, Plastik, Kertas.
+  - Deteksi GPS otomatis (`expo-location`) dan reverse geocoding alamat jalan.
+  - Input deskripsi laporan sampah.
+  - Pengiriman multipart/form-data ke backend NestJS.
+- [x] **Riwayat & Detail Laporan**:
+  - Tab riwayat laporan dengan filter status (Semua, Menunggu, Diproses, Selesai, Ditolak).
+  - Tampilan detail laporan: foto resolusi penuh, koordinat, tombol buka Google Maps.
+  - Audit log status: mencatat transisi status dan catatan tindak lanjut petugas secara transparan.
+  - Opsi pembatalan/penghapusan laporan oleh warga selama status masih `PENDING`.
+- [x] **Profil & Pengaturan URL Backend**:
+  - Tampilan profil pengguna dan status akun.
+  - Pengaturan URL server dinamis (memudahkan pengujian via HP fisik di jaringan Wi-Fi LAN `http://192.168.1.10:3000/api/v1` atau emulator `http://10.0.2.2:3000/api/v1`).
+  - Tombol logout dengan dialog konfirmasi.
+- [x] **Desain & Sentuhan Pixel Art**:
+  - Tombol hijau retro dengan bayangan bertingkat (`PixelButton`).
+  - Kartu bergaris tegas dengan drop shadow retro (`PixelCard`).
+  - Tag status berkurung pixel (`PixelBadge`: `[ ♻️ ORGANIK ]`, `[ ⏳ MENUNGGU ]`).
+  - State kosong pixel art (`PixelEmptyState`).
+  - Placeholder loading animasi denyut (`PixelSkeleton`).
 
 ---
 
@@ -60,4 +107,3 @@ Hasil akhir: Website Next.js responsive dengan Tailwind CSS terintegrasi penuh k
 - [x] **Desain Responsif**:
   - Sidebar dinamis (desktop sticky, mobile slide drawer)
   - Responsif di layar HP, tablet, maupun desktop
-
