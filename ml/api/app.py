@@ -9,6 +9,17 @@ import json
 import os
 from pathlib import Path
 
+# Setup spaces decorator untuk Hugging Face ZeroGPU requirement
+try:
+    import spaces
+except ImportError:
+    class spaces:  # type: ignore
+        @staticmethod
+        def GPU(fn=None, **kwargs):
+            if fn:
+                return fn
+            return lambda f: f
+
 # Nonaktifkan GPU agar TensorFlow berjalan aman di CPU dan tidak bentrok dengan ZeroGPU sandbox
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
@@ -44,6 +55,7 @@ DEFAULT_DISPLAY = {
 def display_name(class_name: str) -> str:
     return meta.get("display_names", {}).get(class_name) or DEFAULT_DISPLAY.get(class_name, class_name)
 
+@spaces.GPU
 def process_and_predict(pil_img: Image.Image):
     pil_img = ImageOps.exif_transpose(pil_img).convert("RGB")
     size = tuple(meta.get("img_size", [224, 224]))
@@ -57,6 +69,7 @@ def process_and_predict(pil_img: Image.Image):
     return top_label, float(probs[top_idx]), probabilities
 
 # Fungsi untuk Web UI Gradio
+@spaces.GPU
 def gradio_predict(img: Image.Image):
     if img is None:
         return "Silakan masukkan foto sampah", {}
