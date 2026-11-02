@@ -16,6 +16,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Smart Waste Management System',
   description: 'Sistem Informasi Pengelolaan Sampah Cerdas',
+  icons: {
+    icon: '/smart-waste-mascot.png',
+    shortcut: '/smart-waste-mascot.png',
+    apple: '/smart-waste-mascot.png',
+  },
 };
 
 export default function RootLayout({

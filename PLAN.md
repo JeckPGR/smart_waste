@@ -72,7 +72,7 @@ Hasil akhir: Website Next.js responsive dengan Tailwind CSS terintegrasi penuh k
 - [x] **Setup Next.js & Tailwind CSS**: Project Next.js App Router dengan TypeScript, Tailwind CSS, Lucide Icons.
 - [x] **Autentikasi & Role**:
   - Halaman login (`/login`) & pendaftaran (`/register`)
-  - Tombol demo instant login untuk Admin (`admin@smartwaste.id` / `Admin123!`) dan User
+  - Tombol demo instant login untuk Admin (`admin@smartwaste.id` / `Admin123!`) dan Warga (`warga@smartwaste.id` / `Warga123!`)
   - AuthProvider (Context), token storage, auto-restore session via `/auth/me`
   - Proteksi route dan pembedaan antarmuka berdasarkan role (`ADMIN` vs `USER`)
 - [x] **Dashboard Statistik Laporan**:

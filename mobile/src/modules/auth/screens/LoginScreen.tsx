@@ -46,8 +46,8 @@ export function LoginScreen({ onNavigateRegister }: LoginScreenProps) {
     };
 
     const handleFillDemoUser = () => {
-        setEmail('user@smartwaste.id');
-        setPassword('User123!');
+        setEmail('warga@smartwaste.id');
+        setPassword('Warga123!');
         setError(null);
     };
 

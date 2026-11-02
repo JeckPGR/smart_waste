@@ -39,8 +39,8 @@ export function LoginForm() {
     };
 
     const handleFillUser = () => {
-        setEmail('user@smartwaste.id');
-        setPassword('User123!');
+        setEmail('warga@smartwaste.id');
+        setPassword('Warga123!');
         setError(null);
     };
 
@@ -111,7 +111,7 @@ export function LoginForm() {
                             size="sm"
                             onClick={handleFillUser}
                         >
-                            User
+                            Warga (User)
                         </Button>
                     </div>
                 </div>
