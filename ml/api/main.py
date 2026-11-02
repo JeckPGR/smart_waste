@@ -10,6 +10,9 @@ import io
 import json
 import logging
 import os
+# Nonaktifkan GPU agar TensorFlow tidak bentrok dengan ZeroGPU sandbox Hugging Face
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 from contextlib import asynccontextmanager
 from pathlib import Path
 

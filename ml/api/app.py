@@ -4,6 +4,11 @@ Menyediakan:
 1. Web UI interaktif Gradio untuk demo publik di browser
 2. REST API /predict & /health untuk dipanggil oleh Backend NestJS
 """
+import os
+# Nonaktifkan GPU agar TensorFlow tidak bentrok dengan ZeroGPU sandbox Hugging Face
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+
 import io
 import json
 import logging
