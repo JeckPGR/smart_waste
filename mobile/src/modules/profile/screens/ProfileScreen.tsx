@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     ScrollView,
     StyleSheet,
@@ -8,6 +8,7 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
 import { useAuth } from '@/modules/auth/context/AuthContext';
+import { DashboardService, UserDashboardStats } from '@/modules/dashboard/services/dashboard.service';
 import { PixelButton } from '@/shared/components/PixelButton';
 import { PixelCard } from '@/shared/components/PixelCard';
 import { SlateDialog } from '@/shared/components/SlateDialog';
@@ -18,6 +19,18 @@ export function ProfileScreen() {
     const { user, logout } = useAuth();
     const [showLogoutDialog, setShowLogoutDialog] = useState(false);
     const [loggingOut, setLoggingOut] = useState(false);
+    const [stats, setStats] = useState<UserDashboardStats | null>(null);
+
+    useEffect(() => {
+        DashboardService.getMyStats()
+            .then(setStats)
+            .catch(() => {});
+    }, []);
+
+    const totalReports = stats?.totalReports || 0;
+    const completedReports = stats?.byStatus.COMPLETED || 0;
+    const ecoXp = (totalReports * 50) + (completedReports * 50);
+    const userLevel = Math.max(1, Math.floor(ecoXp / 150) + 1);
 
     const handleConfirmLogout = async () => {
         setLoggingOut(true);
@@ -68,7 +81,7 @@ export function ProfileScreen() {
                 >
                     <View style={styles.ecoRow}>
                         <View style={styles.ecoItem}>
-                            <Text style={styles.ecoNum}>LVL 1</Text>
+                            <Text style={styles.ecoNum}>LVL {userLevel}</Text>
                             <Text style={styles.ecoDesc}>Pangkat Warga</Text>
                         </View>
                         <View style={styles.ecoItem}>
@@ -76,7 +89,7 @@ export function ProfileScreen() {
                             <Text style={styles.ecoDesc}>Status Akun</Text>
                         </View>
                         <View style={styles.ecoItem}>
-                            <Text style={[styles.ecoNum, { color: Colors.pixelGold }]}>100 XP</Text>
+                            <Text style={[styles.ecoNum, { color: Colors.pixelGold }]}>{ecoXp} XP</Text>
                             <Text style={styles.ecoDesc}>Eco XP</Text>
                         </View>
                     </View>

@@ -98,6 +98,15 @@ export function LeaderboardScreen({ onBack }: LeaderboardScreenProps) {
                         </Text>
                     </View>
 
+                    {leaderboard.length === 0 && (
+                        <View style={styles.allEmptyBanner}>
+                            <Ionicons name="information-circle-outline" size={18} color={Colors.primary} />
+                            <Text style={styles.allEmptyBannerText}>
+                                Belum ada riwayat aktivitas laporan. Jadilah warga pertama yang melapor untuk memimpin podium!
+                            </Text>
+                        </View>
+                    )}
+
                     {/* ================= PODIUM SECTION (TOP 1 - 3) ================= */}
                     <View style={styles.podiumContainer}>
                         {/* Rank 2 (Silver - Left) */}
@@ -124,7 +133,15 @@ export function LeaderboardScreen({ onBack }: LeaderboardScreenProps) {
                                         <Text style={styles.podiumStatItem}>✅ {top2.completedReports}</Text>
                                     </View>
                                 </View>
-                            ) : null}
+                            ) : (
+                                <View style={[styles.podiumUserWrap, styles.emptyPodiumUserWrap]}>
+                                    <View style={[styles.avatarWrap, styles.avatarEmpty]}>
+                                        <Feather name="user" size={18} color="#94A3B8" />
+                                    </View>
+                                    <Text style={styles.emptySlotName}>Tersedia</Text>
+                                    <Text style={styles.emptySlotHint}>Peringkat 2</Text>
+                                </View>
+                            )}
                             <View style={[styles.podiumBlock, styles.podiumBlockSilver]}>
                                 <Text style={styles.podiumNumberText}>2</Text>
                                 <Text style={styles.podiumPedestalSub}>PERAK</Text>
@@ -160,7 +177,15 @@ export function LeaderboardScreen({ onBack }: LeaderboardScreenProps) {
                                         <Text style={styles.podiumStatItem}>✅ {top1.completedReports}</Text>
                                     </View>
                                 </View>
-                            ) : null}
+                            ) : (
+                                <View style={[styles.podiumUserWrap, styles.emptyPodiumUserWrap]}>
+                                    <View style={[styles.avatarWrap, styles.avatarEmpty]}>
+                                        <Feather name="award" size={20} color="#F59E0B" />
+                                    </View>
+                                    <Text style={[styles.emptySlotName, { color: '#B45309' }]}>Tersedia</Text>
+                                    <Text style={styles.emptySlotHint}>Peringkat 1</Text>
+                                </View>
+                            )}
                             <View style={[styles.podiumBlock, styles.podiumBlockGold]}>
                                 <Text style={styles.podiumNumberTextGold}>1</Text>
                                 <Text style={styles.podiumPedestalSubGold}>EMAS</Text>
@@ -191,7 +216,15 @@ export function LeaderboardScreen({ onBack }: LeaderboardScreenProps) {
                                         <Text style={styles.podiumStatItem}>✅ {top3.completedReports}</Text>
                                     </View>
                                 </View>
-                            ) : null}
+                            ) : (
+                                <View style={[styles.podiumUserWrap, styles.emptyPodiumUserWrap]}>
+                                    <View style={[styles.avatarWrap, styles.avatarEmpty]}>
+                                        <Feather name="user" size={18} color="#94A3B8" />
+                                    </View>
+                                    <Text style={styles.emptySlotName}>Tersedia</Text>
+                                    <Text style={styles.emptySlotHint}>Peringkat 3</Text>
+                                </View>
+                            )}
                             <View style={[styles.podiumBlock, styles.podiumBlockBronze]}>
                                 <Text style={styles.podiumNumberText}>3</Text>
                                 <Text style={styles.podiumPedestalSub}>PERUNGGU</Text>
@@ -205,44 +238,54 @@ export function LeaderboardScreen({ onBack }: LeaderboardScreenProps) {
                         <Text style={styles.sectionSubtitle}>Warga Terverifikasi</Text>
                     </View>
 
-                    <View style={styles.cardsList}>
-                        {remaining.map((item) => (
-                            <View key={item.id} style={styles.sideCard}>
-                                {/* Left Rank Number */}
-                                <View style={styles.rankPill}>
-                                    <Text style={styles.rankPillText}>#{item.rank}</Text>
-                                </View>
+                    {remaining.length > 0 ? (
+                        <View style={styles.cardsList}>
+                            {remaining.map((item) => (
+                                <View key={item.id} style={styles.sideCard}>
+                                    {/* Left Rank Number */}
+                                    <View style={styles.rankPill}>
+                                        <Text style={styles.rankPillText}>#{item.rank}</Text>
+                                    </View>
 
-                                {/* Avatar Initials */}
-                                <View style={styles.cardAvatar}>
-                                    <Text style={styles.cardAvatarText}>
-                                        {item.name.slice(0, 2).toUpperCase()}
-                                    </Text>
-                                </View>
-
-                                {/* User Info */}
-                                <View style={styles.cardUserInfo}>
-                                    <Text style={styles.cardUserName} numberOfLines={1}>
-                                        {item.name}
-                                    </Text>
-                                    <View style={styles.cardSubRow}>
-                                        <View style={styles.levelTag}>
-                                            <Text style={styles.levelTagText}>LVL {item.level}</Text>
-                                        </View>
-                                        <Text style={styles.wasteStatsText}>
-                                            Temuan: <Text style={styles.statBold}>{item.totalReports}</Text> • Selesai: <Text style={styles.statBold}>{item.completedReports}</Text>
+                                    {/* Avatar Initials */}
+                                    <View style={styles.cardAvatar}>
+                                        <Text style={styles.cardAvatarText}>
+                                            {item.name.slice(0, 2).toUpperCase()}
                                         </Text>
                                     </View>
-                                </View>
 
-                                {/* Right XP Badge */}
-                                <View style={styles.cardXpBadge}>
-                                    <Ionicons name="flash" size={12} color="#D97706" />
-                                    <Text style={styles.cardXpText}>{item.xp} XP</Text>
+                                    {/* User Info */}
+                                    <View style={styles.cardUserInfo}>
+                                        <Text style={styles.cardUserName} numberOfLines={1}>
+                                            {item.name}
+                                        </Text>
+                                        <View style={styles.cardSubRow}>
+                                            <View style={styles.levelTag}>
+                                                <Text style={styles.levelTagText}>LVL {item.level}</Text>
+                                            </View>
+                                            <Text style={styles.wasteStatsText}>
+                                                Temuan: <Text style={styles.statBold}>{item.totalReports}</Text> • Selesai: <Text style={styles.statBold}>{item.completedReports}</Text>
+                                            </Text>
+                                        </View>
+                                    </View>
+
+                                    {/* Right XP Badge */}
+                                    <View style={styles.cardXpBadge}>
+                                        <Ionicons name="flash" size={12} color="#D97706" />
+                                        <Text style={styles.cardXpText}>{item.xp} XP</Text>
+                                    </View>
                                 </View>
-                            </View>
-                        ))}
-                    </View>
+                            ))}
+                        </View>
+                    ) : (
+                        <View style={styles.emptyRemainingCard}>
+                            <Feather name="award" size={24} color="#94A3B8" />
+                            <Text style={styles.emptyRemainingTitle}>Belum Ada Warga di Peringkat 4 - 10</Text>
+                            <Text style={styles.emptyRemainingSubtitle}>
+                                Slot peringkat 4 hingga 10 masih terbuka! Terus laporkan tumpukan sampah untuk masuk ke jajaran leaderboard.
+                            </Text>
+                        </View>
+                    )}
                 </ScrollView>
             )}
         </SafeAreaView>
@@ -651,6 +694,69 @@ const styles = StyleSheet.create({
         fontSize: 11,
         fontWeight: '800',
         color: '#B45309',
+    },
+    emptyPodiumUserWrap: {
+        opacity: 0.65,
+        paddingBottom: 4,
+    },
+    avatarEmpty: {
+        borderColor: '#CBD5E1',
+        borderStyle: 'dashed',
+        backgroundColor: '#F8FAFC',
+    },
+    emptySlotName: {
+        fontSize: 11,
+        fontWeight: '700',
+        color: '#64748B',
+        marginTop: 6,
+        textAlign: 'center',
+    },
+    emptySlotHint: {
+        fontSize: 10,
+        fontWeight: '500',
+        color: '#94A3B8',
+        marginTop: 1,
+    },
+    allEmptyBanner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+        backgroundColor: '#EFF6FF',
+        borderWidth: 1,
+        borderColor: '#BFDBFE',
+        borderRadius: 12,
+        padding: 12,
+        marginBottom: 16,
+    },
+    allEmptyBannerText: {
+        flex: 1,
+        fontSize: 11,
+        color: '#1D4ED8',
+        lineHeight: 16,
+    },
+    emptyRemainingCard: {
+        backgroundColor: '#FFFFFF',
+        borderRadius: 14,
+        borderWidth: 1,
+        borderColor: '#E2E8F0',
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+    },
+    emptyRemainingTitle: {
+        fontSize: 13,
+        fontWeight: '700',
+        color: Colors.textPrimary,
+        marginTop: 8,
+        marginBottom: 4,
+        textAlign: 'center',
+    },
+    emptyRemainingSubtitle: {
+        fontSize: 11,
+        color: Colors.textSecondary,
+        textAlign: 'center',
+        lineHeight: 16,
     },
 });
 

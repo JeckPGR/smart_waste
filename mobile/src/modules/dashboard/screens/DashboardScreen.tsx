@@ -272,7 +272,12 @@ export function DashboardScreen({
                                     <Text style={styles.miniXp}>{rank2.xp} XP</Text>
                                 </>
                             ) : (
-                                <Text style={styles.emptySlot}>-</Text>
+                                <View style={styles.miniEmptyWrap}>
+                                    <View style={[styles.miniAvatar, styles.miniAvatarEmpty]}>
+                                        <Text style={styles.miniAvatarTextEmpty}>2</Text>
+                                    </View>
+                                    <Text style={styles.emptySlotText}>Tersedia</Text>
+                                </View>
                             )}
                         </View>
 
@@ -298,7 +303,12 @@ export function DashboardScreen({
                                     <Text style={styles.miniXpGold}>{rank1.xp} XP</Text>
                                 </>
                             ) : (
-                                <Text style={styles.emptySlot}>-</Text>
+                                <View style={styles.miniEmptyWrap}>
+                                    <View style={[styles.miniAvatar, styles.miniAvatarEmpty]}>
+                                        <Text style={styles.miniAvatarTextEmpty}>1</Text>
+                                    </View>
+                                    <Text style={styles.emptySlotText}>Tersedia</Text>
+                                </View>
                             )}
                         </View>
 
@@ -321,7 +331,12 @@ export function DashboardScreen({
                                     <Text style={styles.miniXp}>{rank3.xp} XP</Text>
                                 </>
                             ) : (
-                                <Text style={styles.emptySlot}>-</Text>
+                                <View style={styles.miniEmptyWrap}>
+                                    <View style={[styles.miniAvatar, styles.miniAvatarEmpty]}>
+                                        <Text style={styles.miniAvatarTextEmpty}>3</Text>
+                                    </View>
+                                    <Text style={styles.emptySlotText}>Tersedia</Text>
+                                </View>
                             )}
                         </View>
                     </View>
@@ -735,6 +750,27 @@ const styles = StyleSheet.create({
     emptySlot: {
         fontSize: 12,
         color: '#CBD5E1',
+    },
+    miniEmptyWrap: {
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    miniAvatarEmpty: {
+        borderColor: '#CBD5E1',
+        borderStyle: 'dashed',
+        backgroundColor: '#F8FAFC',
+    },
+    miniAvatarTextEmpty: {
+        fontSize: 12,
+        fontWeight: '700',
+        color: '#94A3B8',
+    },
+    emptySlotText: {
+        fontSize: 9,
+        fontWeight: '600',
+        color: '#94A3B8',
+        marginTop: 3,
+        textAlign: 'center',
     },
     // Quest card
     questCard: {
