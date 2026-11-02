@@ -7,12 +7,12 @@ Technical Coding Test, Fullstack Developer (Bilcode Technology)
 | Fase | Nama | Status |
 |---|---|---|
 | 0 | Fondasi (repo, struktur, skema DB) | ✅ Selesai |
-| 1 | Backend inti (NestJS + PostgreSQL) | ✅ Selesai |
-| 2 | Machine Learning (model + FastAPI) | ⏳ Ditunda sementara |
-| 3 | Website admin (Next.js) | ✅ Selesai |
-| 4 | Aplikasi mobile (Expo / React Native) | ✅ Selesai |
-| 5 | Deploy + integrasi end-to-end | ⏳ Berikutnya |
-| 6 | Dokumentasi + video demo + submit | ⬜ Belum |
+| 1 | Backend inti (NestJS + PostgreSQL + R2) | ✅ Selesai |
+| 2 | Machine Learning (model + FastAPI) | ✅ Selesai |
+| 3 | Website admin (Next.js 16 + Tailwind v4) | ✅ Selesai |
+| 4 | Aplikasi mobile (Expo SDK 58 / React Native) | ✅ Selesai |
+| 5 | Deploy + integrasi end-to-end | ✅ Selesai |
+| 6 | Dokumentasi lengkap & README | ✅ Selesai |
 
 Legenda: ✅ selesai, ⏳ sedang/berikutnya, ⬜ belum dimulai.
 
