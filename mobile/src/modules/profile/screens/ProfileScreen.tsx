@@ -114,6 +114,26 @@ export function ProfileScreen() {
                     </View>
                 </PixelCard>
 
+                {/* Server Info Card */}
+                <PixelCard
+                    badgeText="Status Jaringan"
+                    title="Koneksi Cloud Backend"
+                    subtitle="Terhubung ke server produksi online"
+                >
+                    <View style={styles.infoRow}>
+                        <Text style={styles.infoLabel}>Server Backend</Text>
+                        <Text style={[styles.infoVal, { color: Colors.primary, fontWeight: '700' }]}>
+                            Render Cloud (Online)
+                        </Text>
+                    </View>
+                    <View style={styles.infoRow}>
+                        <Text style={styles.infoLabel}>Host</Text>
+                        <Text style={[styles.infoVal, { fontSize: 11 }]} numberOfLines={1}>
+                            smart-waste-backend-50bs.onrender.com
+                        </Text>
+                    </View>
+                </PixelCard>
+
                 {/* Logout Button */}
                 <View style={styles.logoutWrap}>
                     <PixelButton

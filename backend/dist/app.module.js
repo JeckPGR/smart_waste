@@ -12,6 +12,7 @@ const config_1 = require("@nestjs/config");
 const ai_module_1 = require("./ai/ai.module");
 const auth_module_1 = require("./auth/auth.module");
 const dashboard_module_1 = require("./dashboard/dashboard.module");
+const health_module_1 = require("./health/health.module");
 const prisma_module_1 = require("./prisma/prisma.module");
 const reports_module_1 = require("./reports/reports.module");
 const storage_module_1 = require("./storage/storage.module");
@@ -23,6 +24,7 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true }),
+            health_module_1.HealthModule,
             prisma_module_1.PrismaModule,
             storage_module_1.StorageModule,
             auth_module_1.AuthModule,
