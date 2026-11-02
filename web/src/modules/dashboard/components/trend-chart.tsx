@@ -56,19 +56,19 @@ export function TrendChart({ data }: TrendChartProps) {
                             title={`${item.date}: ${item.count} laporan`}
                         >
                             {/* Hover tooltip */}
-                            <div className="absolute -top-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-slate-900 text-white text-[10px] font-mono px-1.5 py-0.5 rounded-sm whitespace-nowrap z-20 shadow-xs">
+                            <div className="absolute -top-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none bg-green-950 text-white border border-green-800 text-[10px] font-mono px-1.5 py-0.5 rounded-sm whitespace-nowrap z-20 shadow-xs">
                                 {item.count} lap
                             </div>
 
                             {/* Bar container occupying flexible space */}
                             <div className="w-full flex-1 flex items-end justify-center min-h-0">
-                                <div className={`w-full ${barMaxWidth} bg-slate-100 rounded-t-xs h-full flex items-end overflow-hidden`}>
+                                <div className={`w-full ${barMaxWidth} bg-green-50/70 rounded-t-xs h-full flex items-end overflow-hidden`}>
                                     <div
                                         style={{ height: `${Math.max(heightPercent, isZero ? 2 : 6)}%` }}
                                         className={`w-full rounded-t-xs transition-all duration-300 ${
                                             isZero
                                                 ? 'bg-slate-200'
-                                                : 'bg-slate-900 group-hover:bg-slate-700'
+                                                : 'bg-green-600 group-hover:bg-green-500 shadow-2xs'
                                         }`}
                                     />
                                 </div>

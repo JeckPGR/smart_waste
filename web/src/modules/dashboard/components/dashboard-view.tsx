@@ -268,7 +268,7 @@ export function DashboardView() {
                                                 onClick={() => setTrendDays(d)}
                                                 className={`px-2 py-0.5 text-[11px] font-mono rounded-md transition-colors cursor-pointer ${
                                                     trendDays === d
-                                                        ? 'bg-white text-slate-900 shadow-2xs font-semibold'
+                                                        ? 'bg-green-600 text-white shadow-2xs font-semibold'
                                                         : 'text-slate-500 hover:text-slate-800'
                                                 }`}
                                             >

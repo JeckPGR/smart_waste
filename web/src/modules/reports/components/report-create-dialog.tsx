@@ -243,7 +243,7 @@ export function ReportCreateDialog({ isOpen, onClose, onCreated }: ReportCreateD
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         placeholder="Jelaskan kondisi tumpukan sampah atau volume..."
-                        className="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-slate-900 focus:border-slate-900 shadow-2xs"
+                        className="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-green-600 focus:border-green-600 shadow-2xs"
                         required
                     />
                 </div>

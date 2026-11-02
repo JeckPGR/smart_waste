@@ -15,7 +15,9 @@ export function MetricCard({ title, value, description, icon: Icon, badge }: Met
             <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
                 <span className="font-medium text-slate-600">{title}</span>
                 {Icon ? (
-                    <Icon className="w-4 h-4 text-slate-400 stroke-[1.75]" />
+                    <div className="w-7 h-7 rounded-lg bg-green-50 border border-green-100/80 flex items-center justify-center text-green-600">
+                        <Icon className="w-4 h-4 stroke-[2]" />
+                    </div>
                 ) : badge ? (
                     <span className="px-1.5 py-0.5 text-[10px] font-mono border border-slate-200 rounded-xs">
                         {badge}

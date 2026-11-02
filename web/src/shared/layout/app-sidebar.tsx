@@ -109,7 +109,7 @@ export function AppSidebar({
                                 onOpenCreateReport();
                                 onClose();
                             }}
-                            className={`flex items-center justify-center gap-2 w-full h-8 text-xs font-medium rounded-lg bg-slate-900 text-white hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer ${
+                            className={`flex items-center justify-center gap-2 w-full h-8 text-xs font-medium rounded-lg bg-green-600 text-white hover:bg-green-700 active:bg-green-800 transition-colors shadow-2xs cursor-pointer ${
                                 isCollapsed ? 'px-0' : 'px-3'
                             }`}
                             title="Buat Laporan Baru"
@@ -135,13 +135,13 @@ export function AppSidebar({
                                     title={isCollapsed ? item.label : undefined}
                                     className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${
                                         isActive
-                                            ? 'bg-slate-100 text-slate-900 font-semibold'
+                                            ? 'bg-green-50 text-green-700 font-semibold'
                                             : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
                                     } ${isCollapsed ? 'justify-center px-0' : ''}`}
                                 >
                                     <Icon
                                         className={`w-4 h-4 shrink-0 ${
-                                            isActive ? 'text-slate-900' : 'text-slate-500'
+                                            isActive ? 'text-green-600' : 'text-slate-500'
                                         }`}
                                     />
                                     {!isCollapsed && <span className="truncate">{item.label}</span>}

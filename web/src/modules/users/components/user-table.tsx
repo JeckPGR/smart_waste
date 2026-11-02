@@ -126,7 +126,7 @@ export function UserTable({
                                         <span
                                             className={`px-2 py-0.5 rounded-md border text-[11px] font-sans uppercase font-medium ${
                                                 item.role === 'ADMIN'
-                                                    ? 'bg-slate-900 text-white border-slate-900'
+                                                    ? 'bg-green-600 text-white border-green-600'
                                                     : 'border-slate-200 bg-slate-50 text-slate-700'
                                             }`}
                                         >

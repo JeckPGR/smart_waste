@@ -118,7 +118,7 @@ export function RegisterForm() {
                     Sudah memiliki akun?{' '}
                     <Link
                         href="/login"
-                        className="font-medium text-slate-900 underline underline-offset-4"
+                        className="font-medium text-green-600 hover:text-green-700 underline underline-offset-4"
                     >
                         Masuk di sini
                     </Link>

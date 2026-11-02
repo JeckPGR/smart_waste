@@ -13,9 +13,9 @@ interface CategoryBreakdownProps {
 
 export function CategoryBreakdown({ byCategory, total }: CategoryBreakdownProps) {
     const categories = [
-        { key: 'ORGANIC', label: 'Organik', icon: Leaf, count: byCategory.ORGANIC || 0 },
-        { key: 'PLASTIC', label: 'Plastik', icon: Recycle, count: byCategory.PLASTIC || 0 },
-        { key: 'PAPER', label: 'Kertas', icon: FileText, count: byCategory.PAPER || 0 },
+        { key: 'ORGANIC', label: 'Organik', icon: Leaf, count: byCategory.ORGANIC || 0, barColor: 'bg-green-600', iconColor: 'text-green-600' },
+        { key: 'PLASTIC', label: 'Plastik', icon: Recycle, count: byCategory.PLASTIC || 0, barColor: 'bg-sky-500', iconColor: 'text-sky-500' },
+        { key: 'PAPER', label: 'Kertas', icon: FileText, count: byCategory.PAPER || 0, barColor: 'bg-amber-500', iconColor: 'text-amber-500' },
     ];
 
     return (
@@ -28,7 +28,7 @@ export function CategoryBreakdown({ byCategory, total }: CategoryBreakdownProps)
                     <div key={cat.key} className="space-y-1.5">
                         <div className="flex items-center justify-between text-xs">
                             <span className="flex items-center gap-1.5 font-medium text-slate-700">
-                                <Icon className="w-3.5 h-3.5 text-slate-400" />
+                                <Icon className={`w-3.5 h-3.5 ${cat.iconColor}`} />
                                 {cat.label}
                             </span>
                             <span className="font-mono text-slate-500">
@@ -37,7 +37,7 @@ export function CategoryBreakdown({ byCategory, total }: CategoryBreakdownProps)
                         </div>
                         <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-slate-900 rounded-full transition-all"
+                                className={`h-full ${cat.barColor} rounded-full transition-all`}
                                 style={{ width: `${pct}%` }}
                             />
                         </div>

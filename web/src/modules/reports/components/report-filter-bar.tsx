@@ -47,7 +47,7 @@ export function ReportFilterBar({
                         value={search}
                         onChange={(e) => onSearchChange(e.target.value)}
                         placeholder="Cari deskripsi, lokasi alamat, atau nama pelapor..."
-                        className="w-full h-9 pl-9 pr-3 text-xs bg-slate-50/50 border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-hidden focus:ring-1 focus:ring-slate-900 focus:border-slate-900 transition-colors shadow-2xs"
+                        className="w-full h-9 pl-9 pr-3 text-xs bg-slate-50/50 border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:bg-white focus:outline-hidden focus:ring-1 focus:ring-green-600 focus:border-green-600 transition-colors shadow-2xs"
                     />
                 </div>
                 <Button type="submit" variant="primary" size="md">

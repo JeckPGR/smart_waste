@@ -120,7 +120,7 @@ export function LoginForm() {
                     Belum punya akun?{' '}
                     <Link
                         href="/register"
-                        className="font-medium text-slate-900 underline underline-offset-4"
+                        className="font-medium text-green-600 hover:text-green-700 underline underline-offset-4"
                     >
                         Daftar di sini
                     </Link>

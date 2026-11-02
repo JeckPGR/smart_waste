@@ -116,7 +116,7 @@ export function ReportStatusDialog({
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
                         placeholder="Contoh: Petugas kebersihan telah dikirim ke lokasi untuk penanganan."
-                        className="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-slate-900 focus:border-slate-900 shadow-2xs transition-colors"
+                        className="w-full px-3 py-2 text-xs bg-white border border-slate-200 rounded-lg text-slate-900 placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-green-600 focus:border-green-600 shadow-2xs transition-colors"
                     />
                     <p className="text-[11px] text-slate-400">
                         Catatan akan tercatat secara permanen di riwayat audit laporan.
@@ -134,7 +134,6 @@ export function ReportStatusDialog({
                         loading={loading}
                         disabled={!isChanged}
                     >
-                        <RotateCw className="w-3 h-3" />
                         Simpan Perubahan
                     </Button>
                 </div>
