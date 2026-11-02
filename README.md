@@ -327,5 +327,5 @@ Untuk mempermudah pengujian instan, sistem telah menyediakan tombol *1-Click Dem
 - ✅ **Cloud Storage**: Integrasi Cloudflare R2 bucket untuk efisiensi penyimpanan gambar berskala besar.
 
 ---
-*Smart Waste Management System — Dikembangkan untuk Technical Coding Test Fullstack Developer (Bilcode Technology).*
+*Smart Waste Management System — Dikembangkan oleh Dzaky.*
 
