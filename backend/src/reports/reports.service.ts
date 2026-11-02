@@ -18,7 +18,8 @@ export class ReportsService {
 
     async create(userId: string, dto: CreateReportDto, file?: Express.Multer.File) {
         if (!file) throw new BadRequestException('Foto wajib diunggah (field: image)');
-        const imageUrl = await this.storage.save(file);
+        const folder = dto.category ? `${dto.category.toLowerCase()}-waste` : 'reports';
+        const imageUrl = await this.storage.save(file, folder);
         return this.prisma.report.create({
             data: {
                 userId,
@@ -75,7 +76,11 @@ export class ReportsService {
         this.assertCanModify(report, user);
 
         const data: Prisma.ReportUpdateInput = { ...dto };
-        if (file) data.imageUrl = await this.storage.save(file);
+        if (file) {
+            const cat = dto.category ?? report.category;
+            const folder = cat ? `${cat.toLowerCase()}-waste` : 'reports';
+            data.imageUrl = await this.storage.save(file, folder);
+        }
 
         const updated = await this.prisma.report.update({ where: { id }, data, include: REPORT_INCLUDE });
         if (file) await this.storage.remove(report.imageUrl);

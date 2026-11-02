@@ -15,6 +15,7 @@ async function bootstrap() {
   const doc = new DocumentBuilder().setTitle('Smart Waste API').setVersion('1.0').addBearerAuth().build();
   SwaggerModule.setup('api/docs', app, SwaggerModule.createDocument(app, doc));
 
-  await app.listen(process.env.PORT ?? 3000);
+  const port = process.env.PORT ?? 3000;
+  await app.listen(port, '0.0.0.0');
 }
 bootstrap();

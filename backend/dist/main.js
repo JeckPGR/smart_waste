@@ -13,7 +13,8 @@ async function bootstrap() {
     app.useStaticAssets((0, path_1.join)(process.cwd(), 'uploads'), { prefix: '/uploads/' });
     const doc = new swagger_1.DocumentBuilder().setTitle('Smart Waste API').setVersion('1.0').addBearerAuth().build();
     swagger_1.SwaggerModule.setup('api/docs', app, swagger_1.SwaggerModule.createDocument(app, doc));
-    await app.listen(process.env.PORT ?? 3000);
+    const port = process.env.PORT ?? 3000;
+    await app.listen(port, '0.0.0.0');
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
