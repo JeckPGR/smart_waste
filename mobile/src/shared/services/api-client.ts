@@ -39,7 +39,7 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
 
     // Set a 10s timeout controller
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000);
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
 
     try {
         const response = await fetch(url, {
@@ -71,7 +71,7 @@ async function request<T>(endpoint: string, options: RequestOptions = {}): Promi
         if (err instanceof ApiError) throw err;
         if (err instanceof Error && err.name === 'AbortError') {
             throw new ApiError(
-                'Koneksi timeout. Pastikan URL menggunakan IP laptop (192.168.1.10) dan HP terhubung ke Wi-Fi yang sama.',
+                'Server sedang bangun atau koneksi lambat. Tunggu sebentar lalu coba lagi.',
                 0,
             );
         }
