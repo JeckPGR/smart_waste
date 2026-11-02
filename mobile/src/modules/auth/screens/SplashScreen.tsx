@@ -11,7 +11,7 @@ import {
     View,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Feather, Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Colors } from '@/shared/theme/colors';
 
 interface SplashScreenProps {
@@ -25,9 +25,7 @@ interface SlideItem {
     title: string;
     description: string;
     isWelcome?: boolean;
-    iconName?: keyof typeof Ionicons.glyphMap;
-    iconColor?: string;
-    iconBg?: string;
+    heroType?: 'camera' | 'gps-radius' | 'truck';
 }
 
 export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) {
@@ -43,9 +41,7 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
             title: 'Foto Sampah di Sekitar',
             description:
                 'Cukup ambil foto tumpukan sampah liar yang Anda temukan. Sistem pintar akan langsung mengenali jenis sampahnya.',
-            iconName: 'camera',
-            iconColor: '#16A34A',
-            iconBg: '#DCFCE7',
+            heroType: 'camera',
         },
         {
             id: 'slide-2',
@@ -53,19 +49,15 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
             title: 'Lokasi Otomatis Terdeteksi',
             description:
                 'Titik lokasi disematkan otomatis pada laporan Anda, sehingga petugas kebersihan dapat segera datang ke lokasi.',
-            iconName: 'location',
-            iconColor: '#0284C7',
-            iconBg: '#E0F2FE',
+            heroType: 'gps-radius',
         },
         {
             id: 'slide-3',
             tag: 'Langkah 3',
-            title: 'Pantau Sampai Bersih',
+            title: 'Armada Datang Membersihkan',
             description:
-                'Ikuti pembaruan status laporan secara langsung hingga sampah selesai dibersihkan dan lingkungan kembali asri.',
-            iconName: 'sparkles',
-            iconColor: '#D97706',
-            iconBg: '#FEF3C7',
+                'Laporan diteruskan ke armada satgas kebersihan untuk segera diangkut dan dibersihkan hingga tuntas.',
+            heroType: 'truck',
         },
         {
             id: 'welcome',
@@ -100,6 +92,40 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
             index: slides.length - 1,
             animated: true,
         });
+    };
+
+    const renderHeroGraphic = (type?: 'camera' | 'gps-radius' | 'truck') => {
+        if (type === 'camera') {
+            return (
+                <View style={styles.cameraHeroCircle}>
+                    <View style={styles.cameraAuraBack} />
+                    <Ionicons name="camera" size={68} color="#16A34A" />
+                </View>
+            );
+        }
+
+        if (type === 'gps-radius') {
+            return (
+                <View style={styles.radarOuterCircle}>
+                    <View style={styles.radarMidCircle}>
+                        <View style={styles.radarCenterPin}>
+                            <Ionicons name="location" size={34} color="#FFFFFF" />
+                        </View>
+                    </View>
+                </View>
+            );
+        }
+
+        if (type === 'truck') {
+            return (
+                <View style={styles.truckHeroCircle}>
+                    <View style={styles.truckAuraBack} />
+                    <MaterialCommunityIcons name="dump-truck" size={72} color="#D97706" />
+                </View>
+            );
+        }
+
+        return null;
     };
 
     const renderSlide = ({ item }: { item: SlideItem }) => {
@@ -141,20 +167,9 @@ export function SplashScreen({ onGetStarted, onLoginPress }: SplashScreenProps) 
                         </View>
                     )}
 
-                    {/* Major Hero Icon (Tanpa Kotak Container yang Ramai) */}
-                    <View
-                        style={[
-                            styles.heroIconCircle,
-                            { backgroundColor: item.iconBg },
-                        ]}
-                    >
-                        {item.iconName && (
-                            <Ionicons
-                                name={item.iconName}
-                                size={56}
-                                color={item.iconColor}
-                            />
-                        )}
+                    {/* Major Hero Icon (Kamera Besar / GPS Radius / Truk Sampah) */}
+                    <View style={styles.heroWrap}>
+                        {renderHeroGraphic(item.heroType)}
                     </View>
 
                     {/* Judul & Deskripsi Sederhana Bahasa User */}
@@ -300,7 +315,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 14,
         paddingVertical: 6,
         borderRadius: 20,
-        marginBottom: 28,
+        marginBottom: 26,
     },
     tagText: {
         fontSize: 12,
@@ -308,14 +323,82 @@ const styles = StyleSheet.create({
         color: '#475569',
         letterSpacing: 0.2,
     },
-    heroIconCircle: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
+    heroWrap: {
+        width: 160,
+        height: 160,
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 36,
+        marginBottom: 32,
     },
+    // Hero 1: Kamera Besar
+    cameraHeroCircle: {
+        width: 140,
+        height: 140,
+        borderRadius: 70,
+        backgroundColor: '#DCFCE7',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+    },
+    cameraAuraBack: {
+        position: 'absolute',
+        width: 160,
+        height: 160,
+        borderRadius: 80,
+        backgroundColor: '#F0FDF4',
+    },
+    // Hero 2: GPS Radius (Concentric Rings)
+    radarOuterCircle: {
+        width: 154,
+        height: 154,
+        borderRadius: 77,
+        borderWidth: 1.5,
+        borderColor: '#BAE6FD',
+        backgroundColor: '#F0F9FF',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    radarMidCircle: {
+        width: 104,
+        height: 104,
+        borderRadius: 52,
+        borderWidth: 1.5,
+        borderColor: '#7DD3FC',
+        backgroundColor: '#E0F2FE',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    radarCenterPin: {
+        width: 58,
+        height: 58,
+        borderRadius: 29,
+        backgroundColor: '#0284C7',
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: '#0284C7',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 4,
+    },
+    // Hero 3: Truk Sampah (Armada Kebersihan)
+    truckHeroCircle: {
+        width: 140,
+        height: 140,
+        borderRadius: 70,
+        backgroundColor: '#FEF3C7',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+    },
+    truckAuraBack: {
+        position: 'absolute',
+        width: 160,
+        height: 160,
+        borderRadius: 80,
+        backgroundColor: '#FFFBEB',
+    },
+    // Teks Slide
     slideTitle: {
         fontSize: 24,
         fontWeight: '800',
