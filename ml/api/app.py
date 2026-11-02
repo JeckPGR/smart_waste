@@ -18,13 +18,21 @@ import tensorflow as tf
 
 from main import app as fastapi_app, state, display_name, MODEL_DIR, ALLOWED_TYPES, MAX_BYTES
 
-# Inisialisasi model saat startup jika belum dimuat oleh lifespan
-model_path = MODEL_DIR / "waste_model.keras"
-meta_path = MODEL_DIR / "model_meta.json"
+# Inisialisasi model saat startup (mendukung lokasi di root atau di folder model/)
+model_path = Path(__file__).parent / "model" / "waste_model.keras"
+if not model_path.exists():
+    model_path = Path(__file__).parent / "waste_model.keras"
+
+meta_path = Path(__file__).parent / "model" / "model_meta.json"
+if not meta_path.exists():
+    meta_path = Path(__file__).parent / "model_meta.json"
+
 if model_path.exists() and meta_path.exists():
     state["meta"] = json.loads(meta_path.read_text())
     state["model"] = tf.keras.models.load_model(model_path)
-    print("Model MobileNetV2 loaded successfully into memory.")
+    print(f"Model MobileNetV2 loaded successfully from {model_path}.")
+else:
+    print(f"WARNING: Model file not found at {model_path} or {meta_path}")
 
 def predict_gradio(img: Image.Image):
     if img is None:

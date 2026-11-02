@@ -46,13 +46,19 @@ async def lifespan(_: FastAPI):
     import tensorflow as tf
 
     model_path = MODEL_DIR / "waste_model.keras"
+    if not model_path.exists():
+        model_path = Path(__file__).parent / "waste_model.keras"
+
     meta_path = MODEL_DIR / "model_meta.json"
+    if not meta_path.exists():
+        meta_path = Path(__file__).parent / "model_meta.json"
+
     if model_path.exists() and meta_path.exists():
         state["meta"] = json.loads(meta_path.read_text())
         state["model"] = tf.keras.models.load_model(model_path)
-        logger.info("Model dimuat. Kelas: %s", state["meta"]["class_names"])
+        logger.info("Model dimuat dari %s. Kelas: %s", model_path, state["meta"]["class_names"])
     else:
-        logger.error("Model tidak ditemukan di %s", MODEL_DIR)
+        logger.error("Model tidak ditemukan di %s maupun di root folder", MODEL_DIR)
     yield
     state["model"] = None
 
