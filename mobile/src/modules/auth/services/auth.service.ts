@@ -27,9 +27,9 @@ export const AuthService = {
     },
 
     async register(dto: RegisterDto): Promise<AuthResponse> {
+        // Hanya memanggil endpoint pendaftaran akun, TIDAK menyimpan token ke local storage
+        // agar user diarahkan ke layar Login terlebih dahulu
         const res = await ApiClient.post<AuthResponse>('/auth/register', dto, { skipAuth: true });
-        await StorageService.setToken(res.accessToken);
-        await StorageService.setUser(res.user);
         return res;
     },
 

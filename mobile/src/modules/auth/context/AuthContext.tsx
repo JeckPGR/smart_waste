@@ -58,9 +58,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     const register = async (dto: RegisterDto) => {
-        const res = await AuthService.register(dto);
-        setToken(res.accessToken);
-        setUser(res.user);
+        await AuthService.register(dto);
+        // Sesi sengaja tidak diset agar user diarahkan login terlebih dahulu
     };
 
     const logout = async () => {

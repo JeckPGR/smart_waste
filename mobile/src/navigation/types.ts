@@ -1,6 +1,6 @@
 export type RootStackParamList = {
     Splash: undefined;
-    Login: undefined;
+    Login: { successMessage?: string; email?: string } | undefined;
     Register: undefined;
     MainTabs: undefined;
     CreateReport: undefined;

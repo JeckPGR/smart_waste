@@ -303,23 +303,36 @@ export function CreateReportScreen({ onSuccess, onCancel }: CreateReportScreenPr
                         {imageUri ? (
                             <View style={styles.imagePreviewWrap}>
                                 <Image source={{ uri: imageUri }} style={styles.imagePreview} />
-                                <View style={styles.imageActionsRow}>
-                                    <View style={{ flex: 1, marginRight: 8 }}>
+                                <View style={styles.imageActionsWrap}>
+                                    {/* 1. Tombol Deteksi Foto Utama (Lebar Penuh) */}
+                                    <View style={{ width: '100%', marginBottom: 10 }}>
                                         <PixelButton
-                                            title="Ganti Foto"
-                                            onPress={handlePickCamera}
-                                            variant="secondary"
-                                            size="sm"
-                                        />
-                                    </View>
-                                    <View style={{ flex: 1 }}>
-                                        <PixelButton
-                                            title={isAiDetecting ? 'Menganalisis...' : 'Deteksi AI'}
+                                            title={isAiDetecting ? 'Menganalisis Foto...' : 'Deteksi Foto'}
                                             onPress={handleDetectAi}
                                             variant="primary"
-                                            size="sm"
+                                            size="md"
                                             loading={isAiDetecting}
                                         />
+                                    </View>
+
+                                    {/* 2. Tombol Ganti Foto Kamera | Ganti Foto Galeri */}
+                                    <View style={styles.imageActionsRow}>
+                                        <View style={{ flex: 1, marginRight: 8 }}>
+                                            <PixelButton
+                                                title="Ganti Foto Kamera"
+                                                onPress={handlePickCamera}
+                                                variant="secondary"
+                                                size="sm"
+                                            />
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <PixelButton
+                                                title="Ganti Foto Galeri"
+                                                onPress={handlePickGallery}
+                                                variant="secondary"
+                                                size="sm"
+                                            />
+                                        </View>
                                     </View>
                                 </View>
                             </View>
@@ -559,8 +572,12 @@ const styles = StyleSheet.create({
         borderColor: '#E2E8F0',
         marginBottom: 12,
     },
+    imageActionsWrap: {
+        width: '100%',
+    },
     imageActionsRow: {
         flexDirection: 'row',
+        width: '100%',
     },
     aiBadgeBox: {
         marginTop: 12,

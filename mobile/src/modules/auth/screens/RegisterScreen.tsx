@@ -6,6 +6,7 @@ import {
     ScrollView,
     StyleSheet,
     Text,
+    ToastAndroid,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -17,9 +18,10 @@ import { useAuth } from '../context/AuthContext';
 
 interface RegisterScreenProps {
     onNavigateLogin: () => void;
+    onRegisterSuccess?: (email: string) => void;
 }
 
-export function RegisterScreen({ onNavigateLogin }: RegisterScreenProps) {
+export function RegisterScreen({ onNavigateLogin, onRegisterSuccess }: RegisterScreenProps) {
     const { register } = useAuth();
 
     const [name, setName] = useState('');
@@ -58,6 +60,16 @@ export function RegisterScreen({ onNavigateLogin }: RegisterScreenProps) {
                 password,
                 phone: phone.trim() || undefined,
             });
+
+            if (Platform.OS === 'android') {
+                ToastAndroid.show('Akun berhasil terbuat! Silakan login untuk melanjutkan.', ToastAndroid.LONG);
+            }
+
+            if (onRegisterSuccess) {
+                onRegisterSuccess(email.trim());
+            } else {
+                onNavigateLogin();
+            }
         } catch (err: unknown) {
             setError(err instanceof Error ? err.message : 'Registrasi gagal');
         } finally {
@@ -140,7 +152,7 @@ export function RegisterScreen({ onNavigateLogin }: RegisterScreenProps) {
 
                         <View style={styles.actionWrap}>
                             <PixelButton
-                                title="Daftar Akun Sekarang ➔"
+                                title="Daftar Akun Baru"
                                 onPress={handleRegister}
                                 variant="primary"
                                 size="md"

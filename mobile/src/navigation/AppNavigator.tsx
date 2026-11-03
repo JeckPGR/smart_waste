@@ -209,16 +209,24 @@ export function AppNavigator() {
                             </Stack.Screen>
                         )}
                         <Stack.Screen name="Login">
-                            {({ navigation }) => (
+                            {({ navigation, route }: any) => (
                                 <LoginScreen
                                     onNavigateRegister={() => navigation.navigate('Register')}
+                                    successMessage={route?.params?.successMessage}
+                                    initialEmail={route?.params?.email}
                                 />
                             )}
                         </Stack.Screen>
                         <Stack.Screen name="Register">
-                            {({ navigation }) => (
+                            {({ navigation }: any) => (
                                 <RegisterScreen
                                     onNavigateLogin={() => navigation.navigate('Login')}
+                                    onRegisterSuccess={(email: string) => {
+                                        navigation.navigate('Login', {
+                                            successMessage: 'Akun berhasil terbuat! Silakan login untuk melanjutkan.',
+                                            email,
+                                        });
+                                    }}
                                 />
                             )}
                         </Stack.Screen>

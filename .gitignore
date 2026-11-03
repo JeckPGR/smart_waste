@@ -25,12 +25,13 @@ build/
 .expo/
 *.tsbuildinfo
 
-# Local uploads
+# Local uploads & DB Backups
 backend/uploads/*
 !backend/uploads/.gitkeep
+database/backups/*.sql
+!database/backups/.gitkeep
 
 # IDE & OS
 .claude/
 .DS_Store
 Thumbs.db
-

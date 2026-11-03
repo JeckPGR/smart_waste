@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Image,
     KeyboardAvoidingView,
@@ -17,15 +17,31 @@ import { useAuth } from '../context/AuthContext';
 
 interface LoginScreenProps {
     onNavigateRegister: () => void;
+    successMessage?: string;
+    initialEmail?: string;
 }
 
-export function LoginScreen({ onNavigateRegister }: LoginScreenProps) {
+export function LoginScreen({
+    onNavigateRegister,
+    successMessage,
+    initialEmail,
+}: LoginScreenProps) {
     const { login } = useAuth();
 
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(initialEmail || '');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [alertMessage, setAlertMessage] = useState<string | null>(successMessage || null);
+
+    useEffect(() => {
+        if (initialEmail) {
+            setEmail(initialEmail);
+        }
+        if (successMessage) {
+            setAlertMessage(successMessage);
+        }
+    }, [initialEmail, successMessage]);
 
     const handleLogin = async () => {
         if (!email.trim() || !password) {
@@ -34,6 +50,7 @@ export function LoginScreen({ onNavigateRegister }: LoginScreenProps) {
         }
 
         setError(null);
+        setAlertMessage(null);
         setLoading(true);
 
         try {
@@ -43,18 +60,6 @@ export function LoginScreen({ onNavigateRegister }: LoginScreenProps) {
         } finally {
             setLoading(false);
         }
-    };
-
-    const handleFillDemoUser = () => {
-        setEmail('warga@smartwaste.id');
-        setPassword('Warga123!');
-        setError(null);
-    };
-
-    const handleFillDemoAdmin = () => {
-        setEmail('admin@smartwaste.id');
-        setPassword('Admin123!');
-        setError(null);
     };
 
     return (
@@ -84,6 +89,13 @@ export function LoginScreen({ onNavigateRegister }: LoginScreenProps) {
 
                     {/* Login Card */}
                     <View style={styles.card}>
+                        {alertMessage && (
+                            <View style={styles.successBox}>
+                                <Text style={styles.successTitle}>Akun berhasil terbuat</Text>
+                                <Text style={styles.successSub}>Silakan login untuk melanjutkan.</Text>
+                            </View>
+                        )}
+
                         {error && (
                             <View style={styles.errorBox}>
                                 <Text style={styles.errorText}>⚠ {error}</Text>
@@ -93,7 +105,10 @@ export function LoginScreen({ onNavigateRegister }: LoginScreenProps) {
                         <PixelInput
                             label="Alamat Email"
                             value={email}
-                            onChangeText={setEmail}
+                            onChangeText={(val) => {
+                                setEmail(val);
+                                setError(null);
+                            }}
                             placeholder="nama@email.com"
                             keyboardType="email-address"
                             autoCapitalize="none"
@@ -102,42 +117,22 @@ export function LoginScreen({ onNavigateRegister }: LoginScreenProps) {
                         <PixelInput
                             label="Kata Sandi"
                             value={password}
-                            onChangeText={setPassword}
+                            onChangeText={(val) => {
+                                setPassword(val);
+                                setError(null);
+                            }}
                             placeholder="••••••••"
                             secureTextEntry
                         />
 
                         <View style={styles.actionWrap}>
                             <PixelButton
-                                title="Masuk Sekarang ➔"
+                                title="Masuk Sekarang"
                                 onPress={handleLogin}
                                 variant="primary"
                                 size="md"
                                 loading={loading}
                             />
-                        </View>
-
-                        {/* Demo Accounts */}
-                        <View style={styles.demoSection}>
-                            <Text style={styles.demoTitle}>Akun Demo Cepat (1-Klik):</Text>
-                            <View style={styles.demoButtonsRow}>
-                                <View style={styles.demoButtonWrap}>
-                                    <PixelButton
-                                        title="👤 Demo Warga"
-                                        onPress={handleFillDemoUser}
-                                        variant="secondary"
-                                        size="sm"
-                                    />
-                                </View>
-                                <View style={styles.demoButtonWrap}>
-                                    <PixelButton
-                                        title="🛡️ Demo Admin"
-                                        onPress={handleFillDemoAdmin}
-                                        variant="secondary"
-                                        size="sm"
-                                    />
-                                </View>
-                            </View>
                         </View>
                     </View>
 
@@ -225,6 +220,25 @@ const styles = StyleSheet.create({
         shadowRadius: 10,
         elevation: 2,
     },
+    successBox: {
+        backgroundColor: '#F0FDF4',
+        borderWidth: 1,
+        borderColor: '#BBF7D0',
+        borderRadius: 12,
+        padding: 12,
+        marginBottom: 14,
+    },
+    successTitle: {
+        fontSize: 13,
+        color: '#166534',
+        fontWeight: '700',
+        marginBottom: 2,
+    },
+    successSub: {
+        fontSize: 12,
+        color: '#15803D',
+        lineHeight: 16,
+    },
     errorBox: {
         backgroundColor: '#FFE4E6',
         borderWidth: 1,
@@ -240,26 +254,6 @@ const styles = StyleSheet.create({
     },
     actionWrap: {
         marginTop: 6,
-    },
-    demoSection: {
-        marginTop: 18,
-        paddingTop: 16,
-        borderTopWidth: 1,
-        borderTopColor: '#F1F5F9',
-    },
-    demoTitle: {
-        fontSize: 11,
-        fontWeight: '600',
-        color: Colors.textSecondary,
-        textAlign: 'center',
-        marginBottom: 10,
-    },
-    demoButtonsRow: {
-        flexDirection: 'row',
-        gap: 8,
-    },
-    demoButtonWrap: {
-        flex: 1,
     },
     registerLink: {
         paddingVertical: 10,
