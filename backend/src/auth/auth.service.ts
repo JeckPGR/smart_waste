@@ -26,11 +26,8 @@ export class AuthService {
 
     async login(dto: LoginDto) {
         const user = await this.prisma.user.findUnique({ where: { email: dto.email.toLowerCase() } });
-        if (!user) {
-            throw new UnauthorizedException('Email belum terdaftar');
-        }
-        if (!(await bcrypt.compare(dto.password, user.password))) {
-            throw new UnauthorizedException('Kata sandi salah');
+        if (!user || !(await bcrypt.compare(dto.password, user.password))) {
+            throw new UnauthorizedException('Email atau kata sandi salah');
         }
         if (!user.isActive) throw new ForbiddenException('Akun dinonaktifkan');
         return this.buildResponse(user);
