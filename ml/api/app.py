@@ -2,7 +2,7 @@
 
 Menyediakan:
 1. REST API /health & /predict untuk dipanggil oleh Backend NestJS (Render).
-2. Web UI interaktif Gradio di root (/) untuk demo publik.
+2. Web UI interaktif Gradio untuk demo publik di browser.
 """
 import io
 import json
@@ -24,15 +24,14 @@ except ImportError:
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import gradio as gr
 import numpy as np
 from PIL import Image, ImageOps, UnidentifiedImageError
 import tensorflow as tf
-import uvicorn
 
-# Inisialisasi model saat startup (mendukung lokasi di root atau di folder model/)
+# Inisialisasi model saat startup
 model_path = Path(__file__).parent / "model" / "waste_model.keras"
 if not model_path.exists():
     model_path = Path(__file__).parent / "waste_model.keras"
@@ -82,17 +81,10 @@ def gradio_predict(img: Image.Image):
     top_label, confidence, probabilities = process_and_predict(img)
     return top_label, probabilities
 
-# 1. Inisialisasi REST API FastAPI murni
-api = FastAPI(title="Smart Waste AI API")
-api.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Router untuk REST API Backend NestJS
+router = APIRouter()
 
-@api.get("/health")
+@router.get("/health")
 def health():
     return {
         "status": "ok",
@@ -100,7 +92,7 @@ def health():
         "classes": meta.get("class_names", []),
     }
 
-@api.post("/predict")
+@router.post("/predict")
 async def predict_api(file: UploadFile = File(...)):
     contents = await file.read()
     if len(contents) > 5 * 1024 * 1024:
@@ -118,7 +110,7 @@ async def predict_api(file: UploadFile = File(...)):
         "probabilities": probabilities,
     }
 
-# 2. Inisialisasi Antarmuka Gradio
+# Inisialisasi Antarmuka Web Gradio
 demo = gr.Interface(
     fn=gradio_predict,
     inputs=gr.Image(type="pil", label="Foto Tumpukan Sampah"),
@@ -131,8 +123,12 @@ demo = gr.Interface(
     flagging_mode="never",
 )
 
-# 3. Mount Gradio ke root (/) FastAPI
-app = gr.mount_gradio_app(api, demo, path="/")
-
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=7860)
+    # 1. Jalankan Gradio server secara non-blocking agar port 7860 tidak bentrok
+    app, _, _ = demo.launch(prevent_thread_lock=True, ssr_mode=False)
+    
+    # 2. Daftarkan router REST API (/health dan /predict) ke instance server yang sedang berjalan
+    app.include_router(router)
+    
+    # 3. Kunci thread agar server tetap hidup di Hugging Face
+    demo.block_thread()
