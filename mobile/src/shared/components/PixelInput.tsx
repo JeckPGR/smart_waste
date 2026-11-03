@@ -4,9 +4,11 @@ import {
     Text,
     TextInput,
     TextInputProps,
+    TouchableOpacity,
     View,
     ViewStyle,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../theme/colors';
 
 interface PixelInputProps extends TextInputProps {
@@ -29,9 +31,14 @@ export function PixelInput({
     wrapperStyle,
     style,
     multiline,
+    secureTextEntry,
     ...props
 }: PixelInputProps) {
     const [isFocused, setIsFocused] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
+    const isPasswordField = Boolean(secureTextEntry);
+    const actualSecure = isPasswordField ? !showPassword : false;
 
     return (
         <View style={[styles.container, containerStyle]}>
@@ -60,6 +67,7 @@ export function PixelInput({
                     style={[
                         styles.input,
                         multiline && styles.inputMultiline,
+                        isPasswordField && { paddingRight: 8 },
                         style,
                     ]}
                     multiline={multiline}
@@ -67,8 +75,23 @@ export function PixelInput({
                     placeholderTextColor="#94A3B8"
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
+                    secureTextEntry={actualSecure}
                     {...props}
                 />
+                {isPasswordField && (
+                    <TouchableOpacity
+                        activeOpacity={0.7}
+                        onPress={() => setShowPassword((prev) => !prev)}
+                        style={styles.eyeButton}
+                        hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
+                    >
+                        <Ionicons
+                            name={showPassword ? 'eye-outline' : 'eye-off-outline'}
+                            size={20}
+                            color="#64748B"
+                        />
+                    </TouchableOpacity>
+                )}
             </View>
 
             {error ? (
@@ -128,6 +151,11 @@ const styles = StyleSheet.create({
     inputMultiline: {
         textAlignVertical: 'top',
         minHeight: 60,
+    },
+    eyeButton: {
+        padding: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     errorText: {
         fontSize: 11,
