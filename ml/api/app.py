@@ -1,17 +1,16 @@
-"""Hugging Face Space Entrypoint (Gradio + FastAPI REST API).
+"""Hugging Face Space Entrypoint (FastAPI REST API + Gradio Web UI).
 
 Menyediakan:
-1. Web UI interaktif Gradio untuk demo publik di browser
-2. REST API /predict & /health untuk dipanggil oleh Backend NestJS
+1. REST API /health & /predict untuk dipanggil oleh Backend NestJS (Render).
+2. Web UI interaktif Gradio di root (/) untuk demo publik.
 """
 import io
 import json
 import os
 from pathlib import Path
 
-# Setup spaces decorator untuk Hugging Face ZeroGPU requirement
+# Setup spaces decorator untuk memenuhi syarat validator Hugging Face ZeroGPU
 try:
-    # pyrefly: ignore[missing-import]
     import spaces
 except ImportError:
     class spaces:  # type: ignore
@@ -21,16 +20,17 @@ except ImportError:
                 return fn
             return lambda f: f
 
-# Nonaktifkan GPU agar TensorFlow berjalan aman di CPU dan tidak bentrok dengan ZeroGPU sandbox
+# Jalankan TensorFlow di CPU host (8 vCPU) agar super cepat (~30ms) dan tidak timeout
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
 
-from fastapi import File, HTTPException, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 import gradio as gr
 import numpy as np
 from PIL import Image, ImageOps, UnidentifiedImageError
 import tensorflow as tf
+import uvicorn
 
 # Inisialisasi model saat startup (mendukung lokasi di root atau di folder model/)
 model_path = Path(__file__).parent / "model" / "waste_model.keras"
@@ -57,13 +57,12 @@ DEFAULT_DISPLAY = {
 def display_name(class_name: str) -> str:
     return meta.get("display_names", {}).get(class_name) or DEFAULT_DISPLAY.get(class_name, class_name)
 
-# Dummy fungsi ber-GPU untuk memenuhi syarat Hugging Face ZeroGPU startup check
+# Dummy fungsi ber-GPU untuk memenuhi syarat validator ZeroGPU Hugging Face
 @spaces.GPU
 def _satisfy_zerogpu():
-    """Memenuhi validator startup ZeroGPU Hugging Face."""
     return True
 
-# Fungsi inferensi di CPU host (8 vCPU) super cepat (~30ms) tanpa GPU timeout/abort
+# Fungsi inferensi di CPU host (cepat & stabil)
 def process_and_predict(pil_img: Image.Image):
     pil_img = ImageOps.exif_transpose(pil_img).convert("RGB")
     size = tuple(meta.get("img_size", [224, 224]))
@@ -83,20 +82,9 @@ def gradio_predict(img: Image.Image):
     top_label, confidence, probabilities = process_and_predict(img)
     return top_label, probabilities
 
-# Buat Gradio Interface
-demo = gr.Interface(
-    fn=gradio_predict,
-    inputs=gr.Image(type="pil", label="Foto Tumpukan Sampah"),
-    outputs=[
-        gr.Textbox(label="Hasil Prediksi Utama", interactive=False),
-        gr.Label(num_top_classes=3, label="Akurasi / Probabilitas per Kategori")
-    ],
-    title="🌱 Smart Waste Management AI (MobileNetV2)",
-    description="Sistem Deteksi Jenis Sampah Otomatis (Organik, Plastik, Kertas) dengan akurasi 96.7%. Berfungsi ganda: Web Demo interaktif & REST API /predict untuk Backend NestJS.",
-)
-
-# Izinkan CORS untuk semua origin (Backend NestJS / Web / Mobile)
-demo.app.add_middleware(
+# 1. Inisialisasi REST API FastAPI murni
+api = FastAPI(title="Smart Waste AI API")
+api.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
     allow_credentials=True,
@@ -104,12 +92,15 @@ demo.app.add_middleware(
     allow_headers=["*"],
 )
 
-# Daftarkan REST API endpoints langsung ke FastAPI bawaan Gradio (demo.app)
-@demo.app.get("/health")
+@api.get("/health")
 def health():
-    return {"status": "ok", "model": "MobileNetV2", "classes": meta.get("class_names")}
+    return {
+        "status": "ok",
+        "model_loaded": model is not None,
+        "classes": meta.get("class_names", []),
+    }
 
-@demo.app.post("/predict")
+@api.post("/predict")
 async def predict_api(file: UploadFile = File(...)):
     contents = await file.read()
     if len(contents) > 5 * 1024 * 1024:
@@ -127,5 +118,21 @@ async def predict_api(file: UploadFile = File(...)):
         "probabilities": probabilities,
     }
 
+# 2. Inisialisasi Antarmuka Gradio
+demo = gr.Interface(
+    fn=gradio_predict,
+    inputs=gr.Image(type="pil", label="Foto Tumpukan Sampah"),
+    outputs=[
+        gr.Textbox(label="Hasil Prediksi Utama", interactive=False),
+        gr.Label(num_top_classes=3, label="Akurasi / Probabilitas per Kategori"),
+    ],
+    title="🌱 Smart Waste Management AI (MobileNetV2)",
+    description="Sistem Deteksi Jenis Sampah Otomatis (Organik, Plastik, Kertas) dengan akurasi 96.7%. Berfungsi ganda: Web Demo interaktif & REST API /predict untuk Backend NestJS.",
+    flagging_mode="never",
+)
+
+# 3. Mount Gradio ke root (/) FastAPI
+app = gr.mount_gradio_app(api, demo, path="/")
+
 if __name__ == "__main__":
-    demo.launch(ssr_mode=False)
+    uvicorn.run(app, host="0.0.0.0", port=7860)
