@@ -21,22 +21,19 @@
 
 **Smart Waste Management System** adalah platform cerdas terintegrasi yang memudahkan masyarakat melaporkan tumpukan sampah liar secara cepat, transparan, dan berbasis kecerdasan buatan, sekaligus membantu dinas kebersihan dan administrator memverifikasi serta menindaklanjuti laporan secara efisien.
 
-### 🚀 Fitur Unggulan
-1. **Deteksi Sampah Otomatis Berbasis AI (MobileNetV2)**:
+### 🚀 Fitur Aplikasi
+1. **Deteksi Sampah Otomatis Berbasis ML (MobileNetV2)**:
    - Menggunakan model deep learning transfer learning **MobileNetV2** yang mengklasifikasikan 3 jenis sampah secara akurat: **Organik**, **Plastik**, dan **Kertas** dengan akurasi pengujian **96.7%**.
    - Dideploy di Hugging Face Spaces dengan server ganda: **FastAPI REST API** (`/predict`) untuk backend dan **Gradio UI** untuk demo publik interaktif.
-2. **Kamera & Geocoding GPS Presisi**:
+2. **Kamera & Geocoding GPS **:
    - Pengambilan foto resolusi penuh (*full capture*) dari kamera atau galeri dengan penanganan otomatis orientasi EXIF (*EXIF orientation fix*), dilengkapi reverse geocoding alamat jalan otomatis.
-3. **Penyimpanan Cloud Terdistribusi**:
+3. **Penyimpanan Cloud CDN**:
    - Foto tersimpan secara aman di **Cloudflare R2 Object Storage** (kompatibel S3) dengan akses URL CDN publik berkecepatan tinggi tanpa biaya egress.
 4. **Audit Trail & Jejak Status Transparan**:
    - Setiap perubahan status (`Menunggu` $\rightarrow$ `Diproses` $\rightarrow$ `Selesai` / `Ditolak`) mencatat identitas petugas, stempel waktu, dan catatan resmi penanganan di tabel `report_status_logs`.
 5. **Gamifikasi & Podium Leaderboard Warga**:
    - Sistem **Eco XP** dan **Level Warga** (+50 XP per laporan diajukan, +50 XP per laporan selesai diverifikasi).
    - Layar **Podium Top 10** dengan pilar olimpiade berwarna (Emas 🥇, Perak 🥈, Perunggu 🥉) serta kartu peringkat 4–10.
-6. **Infrastruktur Database PostgreSQL Mandiri (*Self-Managed*)**:
-   - Bebas dari ketergantungan BaaS (*no vendor lock-in*). Dilengkapi skema DDL murni, *connection pooling*, orkestrator kontainer Docker Compose, serta skrip otomatis *disaster recovery* (backup & restore).
-
 ---
 
 ## 📂 Arsitektur & Struktur Folder Monorepo
@@ -183,13 +180,13 @@ sequenceDiagram
 
 | Layer | Teknologi Utama | Deskripsi & Peran |
 |---|---|---|
-| **Database** | PostgreSQL 16+ (Self-Managed) | Penyimpanan relasional ACID mandiri, custom enum, check constraints, trigger PL/pgSQL, indeks performa, dan connection pooling |
+| **Database** | PostgreSQL 16+| Penyimpanan relasional ACID mandiri, custom enum, check constraints, trigger PL/pgSQL, indeks performa, dan connection pooling |
 | **Database Tooling** | pgAdmin 4 & Docker Compose | GUI manajemen basis data terisolasi & otomatisasi kontainer lokal/VPS |
 | **Disaster Recovery** | `pg_dump` & `psql` scripts | Skrip otomatis backup dan restore bertanggal (`backup.bat` / `backup.sh`) |
 | **Backend API** | NestJS 11, TypeScript, Prisma 6 | REST API arsitektur modular, validasi DTO, JWT Authentication, Swagger OpenAPI |
-| **Object Storage** | Cloudflare R2 (AWS S3 SDK v3) | Penyimpanan file gambar terdistribusi dengan zero-egress fees |
+| **Object Storage** | Cloudflare R2 (AWS S3 SDK v3) | Penyimpanan file gambar dengan zero-egress fees |
 | **Machine Learning** | FastAPI, TensorFlow 2.x, Keras 3 | Transfer Learning MobileNetV2 (Organik, Plastik, Kertas) dengan akurasi 96.7% |
-| **AI Hosting** | Hugging Face Spaces (CPU 8 vCPU) | Dual-mode: Web Demo Gradio interaktif + REST API `/predict` kencang (~30ms) |
+| **AI Hosting** | Hugging Face Spaces (CPU 8 vCPU) | Dual-mode: Web Demo Gradio interaktif + REST API `/predict` (~30ms) |
 | **Web Console** | Next.js 16 (App Router), Tailwind v4 | Dashboard analitik admin & portal warga responsif |
 | **Mobile App** | React Native, Expo SDK 58 | Aplikasi Android & iOS dengan kamera AI, deteksi lokasi GPS, onboarding carousel, dan podium jawara |
 
@@ -304,7 +301,7 @@ cd mobile
 npm install
 npx expo start
 ```
-Scan QR Code yang muncul di terminal menggunakan aplikasi **Expo Go** pada HP Android Anda.
+Scan QR Code yang muncul di terminal menggunakan aplikasi **Expo Go** pada HP Android Anda (Tidak support IoS/Iphone).
 
 #### B. Build File APK Standalone (Siap Install):
 ```bash
